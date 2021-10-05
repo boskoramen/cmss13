@@ -259,6 +259,12 @@
 	forceMove(next_turf)
 	if(distance_travelled++ > 1)
 		invisibility = 0
+
+	// Check we're still flying - in the highly unlikely but apparently possible case
+	// we hit something through forceMove callbacks that we didn't pick up in scan_a_turf
+	if(!speed)
+		return
+
 	SSprojectiles.queue_visual_update(src)
 
 	// Process on move effects
@@ -268,6 +274,7 @@
 		ammo.do_at_max_range(src)
 		speed = 0
 		return 0
+
 	var/ammo_flags = ammo.flags_ammo_behavior | projectile_override_flags
 	if(ammo_flags & AMMO_ROCKET)
 		if(speed == 1 && distance_travelled > 1) speed++

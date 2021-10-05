@@ -4,10 +4,10 @@ SUBSYSTEM_DEF(projectiles)
 	flags = SS_TICKER
 	priority = SS_PRIORITY_PROJECTILES
 
-	/// Projectiles scheduled for Passive Hit Checking, followed by affected atom (you walked into it idiot)
-	VAR_PRIVATE/list/atom/hit_queue
+	/// List of Tuples of projectile-target scheduled for passive hit checking (you walked into it you idiot)
+	VAR_PRIVATE/list/list/atom/hit_queue
 	/// Current run handled passive hit checking projectiles from hit_queue
-	VAR_PRIVATE/list/atom/hit_current
+	VAR_PRIVATE/list/list/atom/hit_current
 
 	/// All projectiles being handled by the subsystem
 	VAR_PRIVATE/list/obj/item/projectile/flying
@@ -30,14 +30,12 @@ SUBSYSTEM_DEF(projectiles)
 	VAR_PRIVATE/fly_updates = 0
 	/// Flight updates ran during last firing
 	VAR_PRIVATE/fly_updates_last = 0
-	/// Amount of instant hit overrides, debugging
-	VAR_PRIVATE/instant_effects = 0
-	/// Amount of projectiles dropped due to uncaught errors if any (i hope not)
+	/// Amount of projectiles dropped due to uncaught errors if any
 	VAR_PRIVATE/total_errors = 0
 
 
 /datum/controller/subsystem/projectiles/stat_entry(msg)
-	msg = "Proj:[flying.len] | Fly:[fly_updates] | Scan:[hit_updates] | I:[instant_effects] | E:[total_errors]"
+	msg = " | #Proj: [flying.len] | Fly: [round(fly_updates, 0.01)] | Scan: [round(hit_updates, 0.01)] | [total_errors] errors"
 	return ..()
 
 /datum/controller/subsystem/projectiles/Initialize(start_timeofday)
@@ -53,9 +51,9 @@ SUBSYSTEM_DEF(projectiles)
 		vis_queue = list()
 
 		// Update stat counters (stolen from MC_AVERAGEs, not a real running average)
-		hit_updates = 0.95 * hit_updates + 0.05 * hit_updates_last
+		hit_updates = 0.6 * hit_updates + 0.4 * hit_updates_last
 		hit_updates_last = 0
-		fly_updates = 0.95 * fly_updates + 0.05 * fly_updates_last
+		fly_updates = 0.6 * fly_updates + 0.4 * fly_updates_last
 		fly_updates_last = 0
 
 		// Switch hit queue to active but preserve the allocated list
@@ -74,16 +72,18 @@ SUBSYSTEM_DEF(projectiles)
 			fly_queue[P] = delta_time
 
 	// Start by handling queued hits triggered by BYOND via Collide/Crossed and posted to register_passive_hit()
-	while(hit_current.len > 1)
+	while(hit_current.len)
 		if(MC_TICK_CHECK)
 			return
-		var/obj/item/projectile/projectile = hit_current[hit_current.len-1]
-		var/atom/affected = hit_current[hit_current.len]
-		hit_current.len -= 2
-		if(!projectile || QDELETED(affected))
-			continue // Already gone
-		handle_projectile_hit(projectile, affected)
-		hit_updates_last++
+		var/list/atom/tuple = hit_current[hit_current.len]
+		hit_current.len--
+		if(length(tuple) == 2)
+			var/obj/item/projectile/projectile = tuple[1]
+			var/atom/affected = tuple[2]
+			if(!QDELETED(projectile) || QDELETED(affected))
+				continue // Already gone
+			handle_projectile_hit(projectile, affected)
+			hit_updates_last++
 
 	// Process bullet flight updates, actually moving them
 	while(fly_queue.len)
@@ -101,6 +101,8 @@ SUBSYSTEM_DEF(projectiles)
 		if(projectile)
 			remaining = fly_queue[projectile] // We keep timings updated in fly_queue
 		fly_current.len--
+		if(QDELETED(projectile))
+			continue // Huh. We handle their travel, and would know if we deleted it, something else must have...
 
 		// State handling is too complex and unsafe for fire() so we defer queueing logic out of it. NO gameplay logic here.
 		if(remaining <= 0 || !handle_projectile_flight(projectile, remaining))
@@ -125,6 +127,7 @@ SUBSYSTEM_DEF(projectiles)
 	set waitfor = FALSE // Catching runtime sleeps that might evade static analysis (because it's imperfect by concept)
 	. = FALSE
 
+	fly_updates_last++
 	var/update = projectile.process_projectile(remaining)
 
 	if(update == PROC_CRIT_FAIL) // This shouldn't happen obviously but it did enough in the past to give me PTSD and warrant a minor warning.
@@ -153,8 +156,8 @@ SUBSYSTEM_DEF(projectiles)
 
 /// Request to run hit checking and effect for a projectile on controller time when available
 /datum/controller/subsystem/projectiles/proc/register_passive_hit(obj/item/projectile/projectile, atom/affected)
-	// Because we're mixing up potentially zero-schedule BYOND events (via Crossed/Collided) and MC backed ones through
-	// ALL OF GAME LOGIC, this requires some creative thinking... I'm sorry. Problem is, both hits and bullet flight
+	// Because we're mixing up potentially zero-schedule BYOND events or move callbacks (via Crossed/Collided) and MC backed
+	// ones through ALL OF GAME LOGIC, this requires some creative thinking... I'm sorry. Problem is, both hits and bullet flight
 	// are intensive operations that warrant running under MC scheduling, but you can't just have
 	// two separate controllers as they interwind (hit/effect delay, bullet cant fly if it already hit, ...)
 
@@ -167,7 +170,6 @@ SUBSYSTEM_DEF(projectiles)
 		// during flight, and something else got knocked into yet another projectile.
 		// We need to take care of it NOW to ensure proper ordering. We're already on SS time, so it's fine.
 		if(SS_RUNNING)
-			instant_effects++ // Keep count as we want to ensure this is a rare occurence
 			handle_projectile_hit(projectile, affected)
 			return
 
@@ -175,13 +177,11 @@ SUBSYSTEM_DEF(projectiles)
 		// We need to respect ordering vs flight still, but we can afford to defer it until we unpause to take advantage of MC scheduling.
 		// Because this is SS_TICKER, this should be a rare fallback - and hopefully as it mostly defeats the point of the queue.
 		if(SS_PAUSED)
-			hit_current += affected // Yes this is reversed, see above in fire()
-			hit_current += projectile
+			hit_current += list(projectile, affected)
 			return
 
 	// Just add it to next run, this is what should usually happen.
-	hit_queue += projectile
-	hit_queue += affected
+	hit_queue += list(projectile, affected)
 
 /// Convenience to relay to projectile hit logic
 /datum/controller/subsystem/projectiles/proc/handle_projectile_hit(obj/item/projectile/projectile, atom/affected)
