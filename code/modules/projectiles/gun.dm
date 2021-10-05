@@ -739,7 +739,7 @@
 		ammo = GLOB.ammo_list[magazine.default_ammo]
 	if(!magazine.caliber)
 		to_chat(user, "Something went horribly wrong. Ahelp the following: ERROR CODE A2: null calibre while reloading.")
-		log_debug("ERROR CODE A2: null calibre while reloading. User: <b>[user]</b> Weapon: <b>[src]</b> Magazine: <b>[magazine]</b>")	
+		log_debug("ERROR CODE A2: null calibre while reloading. User: <b>[user]</b> Weapon: <b>[src]</b> Magazine: <b>[magazine]</b>")
 		caliber = "bugged calibre"
 	else
 		caliber = magazine.caliber
@@ -1152,16 +1152,18 @@ and you're good to go.
 
 			//This is where the projectile leaves the barrel and deals with projectile code only.
 			//vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
-			projectile_to_fire.fire_at(target, user, src, projectile_to_fire?.ammo?.max_range, bullet_velocity, original_target, FALSE)
+			in_chamber = null
+			INVOKE_ASYNC(projectile_to_fire, /obj/item/projectile.proc/fire_at, target, user, src, projectile_to_fire?.ammo?.max_range, bullet_velocity, original_target, FALSE)
 			//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 			if(check_for_attachment_fire)
 				active_attachable.last_fired = world.time
 			else
 				last_fired = world.time
-			SEND_SIGNAL(user, COMSIG_MOB_FIRED_GUN, src, projectile_to_fire)
-			flags_gun_features |= GUN_FIRED_BY_USER
+			SEND_SIGNAL(user, COMSIG_MOB_FIRED_GUN, src, projectile_to_fire) // <== PLEASE DONT USE THIS. It might work now, but under legacy code the projectile could ALREADY have hit and been deleted. Seriously, don't.
+			projectile_to_fire = null // See note on previous line
 
+			flags_gun_features |= GUN_FIRED_BY_USER
 			if(flags_gun_features & GUN_FULL_AUTO_ON)
 				fa_shots++
 

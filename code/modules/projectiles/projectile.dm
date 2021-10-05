@@ -13,23 +13,21 @@
 	anchored = 1 //You will not have me, space wind!
 	flags_atom = NOINTERACT //No real need for this, but whatever. Maybe this flag will do something useful in the future.
 	mouse_opacity = 0
-	invisibility = 100 // We want this thing to be invisible when it drops on a turf because it will be on the user's turf. We then want to make it visible as it travels.
+	invisibility = 101 // We want this thing to be invisible when it drops on a turf because it will be on the user's turf. We then want to make it visible as it travels.
 	layer = FLY_LAYER
+	step_size = 128
 
 	var/datum/ammo/ammo //The ammo data which holds most of the actual info.
-
 	var/def_zone = "chest"	//So we're not getting empty strings.
 
-	var/yo = null
-	var/xo = null
-
-	var/p_x = 16
-	var/p_y = 16 // the pixel location of the tile that the player clicked. Default is the center
-
-	var/current 		 = null
 	var/atom/shot_from 	 = null // the object which shot us
 	var/atom/original 	 = null // the original target clicked
 	var/atom/firer 		 = null // Who shot it
+
+	/// Actual pixel X cursor target
+	var/p_x = 16
+	/// Actual pixel cursor Y target
+	var/p_y = 16
 
 	var/turf/target_turf = null
 	var/turf/starting 	 = null // the projectile's starting turf
@@ -39,37 +37,46 @@
 
 	var/damage = 0
 	var/accuracy = 85 //Base projectile accuracy. Can maybe be later taken from the mob if desired.
-
 	var/damage_falloff = 0 //how much effectiveness in damage the projectile loses per tiles travelled beyond the effective range
 	var/damage_buildup = 0 //how much effectiveness in damage the projectile loses before the effective range
-
 	var/effective_range_min	= 0	//What minimum range the projectile deals full damage, builds up the closer you get. 0 for no minimum. Set by the weapon.
 	var/effective_range_max	= 0	//What maximum range the projectile deals full damage, tapers off using damage_falloff after hitting this value. 0 for no maximum. Set by the weapon.
-
-	var/scatter = 0
-
-	var/distance_travelled = 0
-	var/in_flight = 0
-
-	var/projectile_override_flags = 0
-
-	var/is_shrapnel
-
+	var/list/bullet_traits
+	var/is_shrapnel = FALSE
 	var/datum/cause_data/weapon_cause_data
 
+	// Legacy flight props
+	var/scatter = 0
+	var/distance_travelled = 0
+	var/projectile_override_flags = 0
 	var/mob/living/homing_target = null
 
-	var/list/bullet_traits
+	// Runtime projectile flight properties
+	// =============================================
+	/// Current bullet speed in turfs-per-decisecond, can be partial
+	var/speed = 0.0
+	/// Random plus/minus factor to speed once fired so bullets don't just all show up in the same place
+	var/speed_var = 0.1
+	/// Carryover of bullet progress within current tile if applicable, used for partial travel
+	var/dist_carry = 0.0
+	/// Direct angle at firing time, in degrees from BYOND NORTH, mostly used for visual updates
+	var/angle = 0
+	/// Scalar coeff for linear trajectory in y=ax+b form
+	var/dx = 0
+	/// Scalar coeff for linear trajectory in x=ay+b form (as alternate to dx)
+	var/dy = 0
+	/// Constant coeff for linar trajectory above (the b)
+	var/linearc = 0
 
 /obj/item/projectile/Initialize(mapload, var/datum/cause_data/cause_data)
-	. = ..(mapload)
+	. = ..()
 	path = list()
 	permutated = list()
 	weapon_cause_data = cause_data
 	firer = cause_data?.resolve_mob()
 
 /obj/item/projectile/Destroy()
-	in_flight = 0
+	speed = 0
 	ammo = null
 	shot_from = null
 	original = null
@@ -78,6 +85,7 @@
 	permutated = null
 	path = null
 	weapon_cause_data = null
+	homing_target = null
 	firer = null
 	return ..()
 
@@ -91,17 +99,21 @@
 		to_give.apply_bullet_trait(entry.Copy())
 
 /obj/item/projectile/Collided(atom/movable/AM)
-	if(AM && !(AM in permutated))
-		scan_a_turf(AM.loc)
+	if(!speed || (AM in permutated))
+		return
+	// Request SSprojectiles to handle the collision on MC-time when possible
+	SSprojectiles.register_passive_hit(src, AM)
 
 /obj/item/projectile/Crossed(atom/movable/AM)
-	if(AM && !(AM in permutated))
-		scan_a_turf(get_turf(AM))
+	if(!speed || (AM in permutated))
+		return
+	SSprojectiles.register_passive_hit(src, AM)
 
-
+/// We generally don't want the bullet to just disappear as we're using it and need to clean refs
 /obj/item/projectile/ex_act()
-	return FALSE //We do not want anything to delete these, simply to make sure that all the bullet references are not runtiming. Otherwise, constantly need to check if the bullet exists.
+	return FALSE
 
+/// Generate/Copy data from an ammo datum into this projectile
 /obj/item/projectile/proc/generate_bullet(ammo_datum, bonus_damage = 0, special_flags = 0)
 	ammo 		= ammo_datum
 	name 		= ammo.name
@@ -134,10 +146,10 @@
 		return max(0, damage - round((distance_travelled - effective_range_max) * damage_falloff))
 	return damage
 
-// Target, firer, shot from (i.e. the gun), projectile range, projectile speed, original target (who was aimed at, not where projectile is going towards), is_shrapnel (whether it should miss the firer or not)
+/// Target, firer, shot from (i.e. the gun), projectile range, projectile speed, original target (who was aimed at, not where projectile is going towards), is_shrapnel (whether it should miss the firer or not)
 /obj/item/projectile/proc/fire_at(atom/target, atom/F, atom/S, range = 30, speed = 1, atom/original_override, is_shrapnel = FALSE)
-	if(!original)
-		original = istype(original_override) ? original_override : target
+	SHOULD_NOT_SLEEP(TRUE)
+	original = original || original_override || target
 	src.is_shrapnel = is_shrapnel
 	if(!loc)
 		if (!is_shrapnel)
@@ -160,7 +172,6 @@
 
 	permutated |= src //Don't try to hit self.
 	shot_from = S
-	in_flight = 1
 
 	setDir(get_dir(loc, target_turf))
 
@@ -177,16 +188,16 @@
 	if(ammo.bonus_projectiles_amount && ammo.bonus_projectiles_type)
 		ammo.fire_bonus_projectiles(src)
 
-	path = getline2(starting,target_turf)
+	path = getline2(starting, target_turf)
+	path.Cut(1, 2) // pop current
+	angle = round(Get_Angle(src, target_turf))
+	apply_transform(turn(matrix(), angle))
+	update_visual_trajectory(target_turf)
 
-	var/change_x = target_turf.x - starting.x
-	var/change_y = target_turf.y - starting.y
-
-	var/angle = round(Get_Angle(starting,target_turf))
-
-	var/matrix/rotate = matrix() //Change the bullet angle.
-	rotate.Turn(angle)
-	apply_transform(rotate)
+	// Simulate scatter and tack it onto effective in-turf target
+	var/scatter_amp = Clamp((rand()-0.5)*scatter*2, -12, 12)
+	p_x += sin(angle + 90) * scatter_amp
+	p_y += cos(angle + 90) * scatter_amp
 
 	var/homing_projectile = homing_target && ammo_flags & AMMO_HOMING
 	if(homing_projectile)
@@ -202,102 +213,187 @@
 				homing_target = null
 				homing_projectile = FALSE
 
-	follow_flightpath(speed,change_x,change_y,range, homing_projectile) //pyew!
+	src.speed = speed
+	if(speed_var)
+		src.speed *= (1 - speed_var + 2 * speed_var * rand())
+	SSprojectiles.queue_projectile(src)
 
-/obj/item/projectile/proc/each_turf(speed = 1)
-	var/new_speed = speed
-	distance_travelled++
-	if(invisibility && distance_travelled > 1) invisibility = 0 //Let there be light (visibility).
-	if(distance_travelled == round(ammo.max_range / 2) && loc) ammo.do_at_half_range(src)
-	var/ammo_flags = ammo.flags_ammo_behavior | projectile_override_flags
-	if(ammo_flags & AMMO_ROCKET) //Just rockets for now. Not all explosive ammo will travel like this.
-		switch(speed) //Get more speed the longer it travels. Travels pretty quick at full swing.
-			if(1)
-				if(distance_travelled > 2) new_speed++
-			if(2)
-				if(distance_travelled > 8) new_speed++
-	return new_speed //Need for speed.
+/**
+ * Handles progressing the bullet's travel, moving it and scanning hits, called by SSprojectile
+ * Takes flight iteration time in ds (unlike regular process() in seconds), and returns an updated value.
+ * The bullet stays scheduled after so long as its actual base speed remains truthy.
+ */
+/obj/item/projectile/proc/process_projectile(delta_time)
+	SHOULD_NOT_SLEEP(TRUE)
+	. = PROC_CRIT_FAIL // Sleeps ?! In my SHOULD_NOT_SLEEP proc ?!!!!
 
-/obj/item/projectile/proc/follow_flightpath(speed = 1, change_x, change_y, range, homing = FALSE) //Everytime we reach the end of the turf list, we slap a new one and keep going.
-	set waitfor = 0
+	if(!speed)
+		return
 
-	var/dist_since_sleep = 5 //Just so we always see the bullet.
+	var/dist = min(delta_time * speed, 1)
+	if(dist_carry + dist < 1) // Too slow, add to carry
+		dist_carry += dist
+		return 0
+	if(dist < 1) // Can move one turf thanks to carry, update it
+		dist_carry += dist - 1
+	// Otherwise moving faster than one turf, so don't touch carry, will be done later
+	. = delta_time - max(0, dist / speed)
 
 	var/turf/current_turf = get_turf(src)
-	var/turf/next_turf
-	var/this_iteration = 0
-	in_flight = 1
+	var/turf/next_turf = popleft(path)
 
-	for(next_turf in path)
-		if(!loc || QDELETED(src) || !in_flight || !ammo)
-			return
+	// Check we can reach the turf at all based on pathed grid
+	var/proj_dir = get_dir(current_turf, next_turf)
+	if((proj_dir & (proj_dir - 1)) && !current_turf.Adjacent(next_turf))
+		ammo.on_hit_turf(current_turf, src)
+		current_turf.bullet_act(src)
+		speed = 0
+		return 0
 
-		if(distance_travelled >= range)
-			ammo.do_at_max_range(src)
-			qdel(src)
-			return
+	// Check for hits that would occur when moving to turf, such as a blocking cade
+	if(scan_a_turf(next_turf, proj_dir))
+		speed = 0
+		return 0
 
-		var/proj_dir = get_dir(current_turf, next_turf)
-		if(proj_dir & (proj_dir-1)) //diagonal direction
-			if(!current_turf.Adjacent(next_turf)) //we can't reach the next turf
-				ammo.on_hit_turf(current_turf,src)
-				current_turf.bullet_act(src)
-				in_flight = 0
-				sleep(0)
-				qdel(src)
-				return
+	// Actually move
+	forceMove(next_turf)
+	if(distance_travelled++ > 1)
+		invisibility = 0
+	SSprojectiles.queue_visual_update(src)
 
-		if(scan_a_turf(next_turf, proj_dir)) //We hit something! Get out of all of this.
-			in_flight = 0
-			sleep(0)
-			qdel(src)
-			return
+	// Process on move effects
+	if(distance_travelled == round(ammo.max_range / 2))
+		ammo.do_at_half_range(src)
+	if(distance_travelled >= ammo.max_range)
+		ammo.do_at_max_range(src)
+		speed = 0
+		return 0
+	var/ammo_flags = ammo.flags_ammo_behavior | projectile_override_flags
+	if(ammo_flags & AMMO_ROCKET)
+		if(speed == 1 && distance_travelled > 1) speed++
+		if(speed == 2 && distance_travelled > 4) speed++
 
-		forceMove(next_turf)
-		speed = each_turf(speed)
-
-		this_iteration++
-		if(++dist_since_sleep >= speed)
-			//TO DO: Adjust flight position every time we see the projectile.
-			//I wonder if I can leave sleep out and just have it stall based on adjustment proc.
-			//Might still be too fast though.
-			dist_since_sleep = 0
-			sleep(1)
-
+	// Track homing target if we can't reach it by adjusting - it should connect next tick
+	if(homing_target && distance_travelled * 2 >= length(path))
 		current_turf = get_turf(src)
+		var/turf/homing_turf = get_turf(homing_target)
+		path = getline2(current_turf, homing_turf)
+		path.Cut(1, 2) // pop current
+		speed *= 2
+		homing_target = null
+		update_visual_trajectory(homing_turf)
 
-		if(homing && !QDELETED(homing_target) && path && this_iteration >= (length(path)/ 2))
-			path = getline2(current_turf, homing_target)
-			speed *= 2 // Bullet needs to become inescapable quicker otherwise you get stuck with wonky projectiles just following people about.
-			if(length(path) > 0 && src)
+	// Adjust computed path if we just missed our intended target
+	if(!length(path))
+		var/turf/aim_turf = get_angle_target_turf(src, angle, distance_travelled * 2 + 1)
+		if(!aim_turf || aim_turf == loc)
+			speed = 0
+			return 0
+		path = getline2(current_turf, aim_turf)
+		path.Cut(1, 2) // pop current
+		update_visual_trajectory(aim_turf)
 
-				if(length(path) < speed) // The projectile "should" connect with the target next tick. Either way, it loses guidances.
-					homing = FALSE
+/// Update trajectory params used for visual updates, does not actually update the visuals
+/obj/item/projectile/proc/update_visual_trajectory(turf/target)
+	var/cur_x = x * 32 + 16 + pixel_x
+	var/cur_y = y * 32 + 16 + pixel_y
+	var/tgt_x = target.x * 32 + p_x
+	var/tgt_y = target.y * 32 + p_y
 
-				distance_travelled--
-				follow_flightpath(speed, change_x, change_y, range, homing) //Onwards!
-				return
-		if(path && this_iteration == path.len)
-			next_turf = locate(current_turf.x + change_x, current_turf.y + change_y, current_turf.z)
-			if(current_turf && next_turf)
-				path = getline2(current_turf,next_turf) //Build a new flight path.
-				if(path.len && src) //TODO look into this. This should always be true, but it can fail, apparently, against DCed people who fall down. Better yet, redo this.
-					distance_travelled-- //because the new follow_flightpath() repeats the last step.
-					follow_flightpath(speed, change_x, change_y, range) //Onwards!
-				else
-					qdel(src)
-					return
-			else //To prevent bullets from getting stuck in maps like WO.
-				qdel(src)
-				return
+
+	// Select most suitable axis to base slope on for float precision
+	dx = dy = 0
+	if(tgt_x - cur_x)
+		dx = (tgt_y - cur_y) / (tgt_x - cur_x)
+	if(tgt_y - cur_y)
+		dy = (tgt_x - cur_x) / (tgt_y - cur_y)
+
+	if(abs(dy) > abs(dx))
+		linearc = cur_x - dy * cur_y
+		dx = 0
+	else
+		linearc = cur_y - dx * cur_x
+		dy = 0
+
+
+/// Update the visual state of the bullet, to be ran after all movement updates have been
+/obj/item/projectile/proc/post_flight_visual_update()
+	SHOULD_NOT_SLEEP(TRUE)
+	// Unfortunately these projectiles don't know where they are at all times, despite the saying.
+	// Bresenham locates and pathes them based on the game grid (using getline2)
+	// This mean they'll skim the turfs grid. However common sense would have them going in a straight line.
+	// That line can also cut outside the grid. It's quite obviously nonsensical and incompatible.
+	//
+	// So instead, we cheat it by projecting the overall firing angle against the current turf,
+	// using the above dist_carry as an indication of "how far" it is into the turf.
+	// This prevents it cutting outside of firing path. The biggest shortcoming is that this bends space,
+	// because the different cross sections of the flight path with a turf are considered to have the same
+	// length in display logic as a result even though they really don't.
+	//
+	// Arguably this is just as wrong as (because matching) the whole bullet travel logic in that regard,
+	// which relies on turfs via Bresenham, and given we're on a fucking 2D Spessmen game with
+	// equidistant diagonals i'll just call this acceptable losses.
+
+	pixel_x = 0
+	pixel_y = 0
+
+	// [Insert matrix rotation here if you ever deem it relevant to update]
+
+	// Try to project turf bounds onto the path
+	var/x1     =     x * 32
+	var/x2     = (x+1) * 32
+	var/y1     =     y * 32 - 1
+	var/y2     = (y+1) * 32 - 1
+
+	var/xproj1 = x1
+	var/xproj2 = x2
+	var/yproj1 = y1
+	var/yproj2 = y2
+
+	if(dy)
+		xproj1 = y1 * dy + linearc
+		xproj2 = y2 * dy + linearc
+		yproj1 = (x1 - linearc) / dy
+		yproj2 = (x2 - linearc) / dy
+
+	else if(dx)
+		xproj1 = (y1 - linearc) / dx
+		xproj2 = (y2 - linearc) / dx
+		yproj1 = x1 * dx + linearc
+		yproj2 = x2 * dx + linearc
+
+	var/effx1 = Clamp(xproj1, x1, x2)
+	var/effx2 = Clamp(xproj2, x1, x2)
+	var/ampx  = effx2 - effx1
+
+	var/effy1 = Clamp(yproj1, y1, y2)
+	var/effy2 = Clamp(yproj2, y1, y2)
+	var/ampy  = effy2 - effy1
+
+	// If this somehow doesn't intersect decently that's a big RIP, scratch all that and only use the angle
+	// That means it won't be aligned with the path, but limits jumping around on edge due to force cheesing it
+	if(abs(ampx) > 33 || abs(ampy) > 33 || (abs(ampx) < 2 && abs(ampy) < 2))
+		// Aka. this didn't actually intersect the path at all somehow
+		var/vecx = sin(angle)
+		var/vecy = cos(angle)
+		pixel_x += round(dist_carry * vecx * 32)
+		pixel_y += round(dist_carry * vecy * 32)
+		return
+
+	// If it DOES intersect, we can consider where we are into the turf and project onto the path
+	pixel_x += round(Clamp(dist_carry * ampx, -16, 16))
+	pixel_y += round(Clamp(dist_carry * ampy, -16, 16))
 
 /obj/item/projectile/proc/scan_a_turf(turf/T, proj_dir)
-	//Not actually flying? Should not be hitting anything.
-	if(!in_flight)
-		return FALSE
-	// Not a turf, keep moving
-	if(!istype(T))
-		return FALSE
+	SHOULD_NOT_SLEEP(TRUE)
+	. = FALSE
+	if(!speed)
+		return
+
+	// Firer's turf, keep moving
+	if(firer && T == firer.loc && !is_shrapnel)
+		return
+
 
 	if(T.density) // Handle wall hit
 		var/ammo_flags = ammo.flags_ammo_behavior | projectile_override_flags
@@ -329,74 +425,21 @@
 	// So does ammo that's flagged to always hit the target
 	if(((ammo_flags & AMMO_EXPLOSIVE) || (ammo_flags & AMMO_HITS_TARGET_TURF)) && T == target_turf)
 		ammo.on_hit_turf(T,src)
-
-		if(T && T.loc)
-			T.bullet_act(src)
-
+		T?.bullet_act(src)
 		return TRUE
 
-	if(ammo_flags & AMMO_SCANS_NEARBY && proj_dir)
-		//this thing scans depending on dir
-		var/cardinal_dir = get_perpen_dir(proj_dir)
-		if(!cardinal_dir)
-			var/d1 = proj_dir&(proj_dir-1)		// eg west		(1+8)&(8) = 8
-			var/d2 = proj_dir - d1			// eg north		(1+8) - 8 = 1
-			cardinal_dir = list(d1,d2)
-
-		var/remote_detonation = 0
-		var/kill_proj = 0
-
-		for(var/ddir in cardinal_dir)
-			var/dloc = get_step(T, ddir)
-			var/turf/dturf = get_turf(dloc)
-			for(var/atom/movable/dA in dturf)
-				if(!isliving(dA))
-					continue
-				var/mob/living/dL = dA
-				if(dL.is_dead())
-					continue
-				if(SEND_SIGNAL(src, COMSIG_BULLET_CHECK_MOB_SKIPPING, dL) & COMPONENT_SKIP_MOB\
-					|| runtime_iff_group && dL.get_target_lock(runtime_iff_group)\
-				)
-					continue
-
-				if(ammo_flags & AMMO_SKIPS_ALIENS && isXeno(dL))
-					var/mob/living/carbon/Xenomorph/X = dL
-					var/mob/living/carbon/Xenomorph/F = firer
-
-					if (!istype(F))
-						continue
-					if (F.can_not_harm(X))
-						continue
-				remote_detonation = 1
-				kill_proj = ammo.on_near_target(T, src)
-				break
-			if(remote_detonation)
-				break
-
-		if(kill_proj)
-			return TRUE
-
-	// Empty turf, keep moving
-	if(!T.contents.len)
-		return FALSE
-
 	for(var/atom/movable/clone/C in T) //Handle clones if there are any
-		if(C.mstr)
-			if(istype(C.mstr, /obj))
-				if(handle_object(C.mstr))
-					return TRUE
-			else if(istype(C.mstr, /mob/living))
-				if(handle_mob(C.mstr))
-					return TRUE
-
+		if(isobj(C.mstr) && handle_object(C.mstr))
+			return TRUE
+		if(isliving(C.mstr) && handle_mob(C.mstr))
+			return TRUE
 	for(var/obj/O in T) //check objects before checking mobs, so that barricades protect
 		if(handle_object(O))
 			return TRUE
-
 	for(var/mob/living/L in T)
 		if(handle_mob(L))
 			return TRUE
+	return FALSE
 
 /obj/item/projectile/proc/handle_object(obj/O)
 	// If we've already handled this atom, don't do it again

@@ -181,6 +181,9 @@
 //some arbitrary defines to be used by self-pruning global lists. (see master_controller)
 #define PROCESS_KILL 26	//Used to trigger removal from a processing list
 
+/// Magic bullshit intermediate return value used to explicitely catch sleeps and runtimes (assuming you don't use negatives..)
+#define PROC_CRIT_FAIL -1
+
 //=================================================
 #define HOSTILE_STANCE_IDLE 1
 #define HOSTILE_STANCE_ALERT 2
