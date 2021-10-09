@@ -8,14 +8,16 @@
 	name = "projectile"
 	icon = 'icons/obj/items/weapons/projectiles.dmi'
 	icon_state = "bullet"
-	density = 0
+	density = FALSE
 	unacidable = TRUE
-	anchored = 1 //You will not have me, space wind!
+	anchored = TRUE //You will not have me, space wind!
 	flags_atom = NOINTERACT //No real need for this, but whatever. Maybe this flag will do something useful in the future.
 	mouse_opacity = 0
 	invisibility = 101 // We want this thing to be invisible when it drops on a turf because it will be on the user's turf. We then want to make it visible as it travels.
 	layer = FLY_LAYER
-	step_size = 128
+	appearance_flags = LONG_GLIDE | PIXEL_SCALE
+	animate_movement = SLIDE_STEPS
+	step_size = 320
 
 	var/datum/ammo/ammo //The ammo data which holds most of the actual info.
 	var/def_zone = "chest"	//So we're not getting empty strings.
@@ -55,8 +57,8 @@
 	// =============================================
 	/// Current bullet speed in turfs-per-decisecond, can be partial
 	var/speed = 0.0
-	/// Random plus/minus factor to speed once fired so bullets don't just all show up in the same place
-	var/speed_var = 0.1
+	/// Random plus/minus factor to speed once fired
+	var/speed_var = 0.05
 	/// Carryover of bullet progress within current tile if applicable, used for partial travel
 	var/dist_carry = 0.0
 	/// Direct angle at firing time, in degrees from BYOND NORTH, mostly used for visual updates
@@ -216,6 +218,10 @@
 	src.speed = speed
 	if(speed_var)
 		src.speed *= (1 - speed_var + 2 * speed_var * rand())
+	// Variable speed is cool but add an aditional starting penalty to really desync bullet visuals
+	// It also helps people see where they're actually shooting
+	dist_carry -= speed / 3 * rand()
+	glide_size = round((speed + dist_carry) * world.tick_lag) // Assumes SSprojectiles runs at wait=1
 	SSprojectiles.queue_projectile(src)
 
 /**
@@ -257,7 +263,8 @@
 
 	// Actually move
 	forceMove(next_turf)
-	if(distance_travelled++ > 1)
+	if(invisibility && distance_travelled++ > 1)
+		glide_size = round(speed * world.tick_lag) // assumes SSprojectiles runs at wait=1
 		invisibility = 0
 
 	// Check we're still flying - in the highly unlikely but apparently possible case
