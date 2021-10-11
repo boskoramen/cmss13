@@ -66,7 +66,8 @@ SUBSYSTEM_DEF(projectiles)
 		// Having it stored per iteration opens the possibility of eg. making it variable under load!
 		delta_time = wait * world.tick_lag
 
-		// Init projectile queue for the iteration
+		// Init projectile queues for the iteration
+		vis_queue = flying.Copy()
 		fly_queue = reverselist(flying)
 		for(var/obj/item/projectile/P as anything in fly_queue)
 			fly_queue[P] = delta_time
@@ -84,6 +85,15 @@ SUBSYSTEM_DEF(projectiles)
 				continue // Already gone
 			handle_projectile_hit(projectile, affected)
 			hit_updates_last++
+
+	// Process visual updates so bullets have the correct parameters for their upcoming glide
+	while(vis_queue.len)
+		if(MC_TICK_CHECK)
+			return
+		var/obj/item/projectile/projectile = vis_queue[vis_queue.len]
+		vis_queue.len--
+		if(!QDELETED(projectile))
+			projectile.pre_flight_visual_update()
 
 	// Process bullet flight updates, actually moving them
 	while(fly_queue.len)
@@ -111,14 +121,6 @@ SUBSYSTEM_DEF(projectiles)
 			fly_queue.Remove(projectile)
 			flying.Remove(projectile)
 			qdel(projectile)
-
-	while(vis_queue.len)
-		if(MC_TICK_CHECK)
-			return
-		var/obj/item/projectile/projectile = vis_queue[vis_queue.len]
-		vis_queue.len--
-		if(!QDELETED(projectile))
-			projectile.post_flight_visual_update()
 
 /// Run internal projectile flight update for a single projectile within fire
 /datum/controller/subsystem/projectiles/proc/handle_projectile_flight(obj/item/projectile/projectile, remaining)
@@ -199,7 +201,3 @@ SUBSYSTEM_DEF(projectiles)
 /// Queue a new projectile for processing
 /datum/controller/subsystem/projectiles/proc/queue_projectile(obj/item/projectile/projectile)
 	flying |= projectile // Very funny
-
-/// Queue a new projectile for processing
-/datum/controller/subsystem/projectiles/proc/queue_visual_update(obj/item/projectile/projectile)
-	vis_queue |= projectile

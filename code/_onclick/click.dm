@@ -22,7 +22,12 @@
 		ignore_next_click = TRUE
 		return usr.do_click(A, location, params)
 
+var/global/clickid = 0
 /mob/proc/do_click(atom/A, location, params)
+	var/start_cooldown = next_move
+	var/real_start_cooldown = next_move
+	clickid++
+
 	// We'll be sending a lot of signals and things later on, this will save time.
 	if(!client)
 		return
@@ -65,9 +70,17 @@
 		client.buildmode.object_click(src, mods, A)
 		return
 
+	if(start_cooldown != next_move)
+		to_world("\[[world.time]\] #[clickid] - signal interacts overriden next_move ! was [start_cooldown] now [next_move]")
+		start_cooldown = next_move
+
 	// Click handled elsewhere. (These clicks are not affected by the next_move cooldown)
 	if (click(A, mods) | A.clicked(src, mods, location, params))
 		return
+
+	if(start_cooldown != next_move)
+		to_world("\[[world.time]\] #[clickid] - click/clicked overriden next_move but let us continue anyway ?! Was [start_cooldown] now [next_move]")
+		start_cooldown = next_move
 
 	// Default click functions from here on.
 
@@ -75,6 +88,10 @@
 		return
 
 	face_atom(A)
+
+	if(start_cooldown != next_move)
+		to_world("\[[world.time]\] #[clickid] - facing overriden next_move ! was [start_cooldown] now [next_move]")
+		start_cooldown = next_move
 
 	// Special type of click.
 	if (is_mob_restrained())
@@ -109,6 +126,8 @@
 		return
 
 	if (world.time <= next_move && A.loc != src)	// Attack click cooldown check
+		if(world.time > real_start_cooldown)
+			to_world("\[[world.time]\] #[clickid] - EATING CLICK. YUM.")
 		return
 
 	next_move = world.time
@@ -337,7 +356,7 @@
 		to_world(SPAN_DEBUG("Hadn't tested."))
 		return
 	var/test_time = (world.time - started_testing) * 0.1 //in seconds
-	
+
 	to_world(SPAN_DEBUG("We did <b>[clicks]</b> clicks over <b>[test_time]</b> seconds, for an average clicks-per-second of <b>[clicks / test_time]</b>."))
 	started_testing = 0
 	clicks = 0

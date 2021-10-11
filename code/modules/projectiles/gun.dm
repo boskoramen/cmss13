@@ -1132,11 +1132,10 @@ and you're good to go.
 		var/bullet_velocity = projectile_to_fire?.ammo?.shell_speed + velocity_add
 
 		if(params)
-			var/list/mouse_control = params2list(params)
-			if(mouse_control["icon-x"])
-				projectile_to_fire.p_x = text2num(mouse_control["icon-x"])
-			if(mouse_control["icon-y"])
-				projectile_to_fire.p_y = text2num(mouse_control["icon-y"])
+			if(params["icon-x"])
+				projectile_to_fire.p_x = text2num(params["icon-x"]) - 16
+			if(params["icon-y"])
+				projectile_to_fire.p_y = text2num(params["icon-y"]) - 16
 
 		//Finally, make with the pew pew!
 		if(QDELETED(projectile_to_fire) || !isobj(projectile_to_fire))
