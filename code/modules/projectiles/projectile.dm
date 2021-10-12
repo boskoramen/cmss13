@@ -15,9 +15,6 @@
 	mouse_opacity = 0
 	invisibility = 101 // We want this thing to be invisible when it drops on a turf because it will be on the user's turf. We then want to make it visible as it travels.
 	layer = FLY_LAYER
-	//appearance_flags = LONG_GLIDE | PIXEL_SCALE
-	//animate_movement = SLIDE_STEPS
-	//step_size = 256
 
 	var/datum/ammo/ammo //The ammo data which holds most of the actual info.
 	var/def_zone = "chest"	//So we're not getting empty strings.
@@ -202,13 +199,13 @@
 
 	path = getline2(starting, target_turf)
 	path.Cut(1, 2) // pop current
+
 	angle = round(Get_Angle(src, target_turf))
-	aiming_range = length(path)
-	post_flight_visual_updates()
+	aiming_range = Clamp(get_dist(src, original), 2, range)
 	update_visual_trajectory(target_turf)
 
 	// Simulate scatter visual as extra inaccuracy to visual impact location
-	var/scatter_amp = Clamp((rand()-0.5)*scatter*3, -8, 8)
+	var/scatter_amp = Clamp((rand()-0.5)*scatter*3, -6, 6)
 	scatter_x = sin(angle + 90) * scatter_amp
 	scatter_y = cos(angle + 90) * scatter_amp
 
@@ -230,12 +227,24 @@
 	src.speed = speed
 	if(speed_var)
 		src.speed *= (1 - speed_var + 2 * speed_var * rand())
-	dist_carry -= speed / 4 * rand()
 
-	// Adjust for smooth glide, assumes SSprojectiles runs at wait=1
-	glide_size = round((speed + dist_carry) * world.tick_lag) * 1.1
+	// Make it move now if applicable so the bullet can visually exist right away
+	// If we don't do this, we don't get a clean glide near shooter
+	var/tickdist = speed / SSprojectiles.wait * world.tick_lag
+	var/headstart = Clamp(rand() * (tickdist-1) + 1, min(1, tickdist), tickdist) // Move at least fast enough for one turf if possible
+	var/retval = process_projectile(headstart / speed)
+	if(retval == PROC_CRIT_FAIL || !speed)
+		return // Already hit something. Real ?
+	if(retval > 0)
+		post_flight_visual_updates()  // Run post flight updates now if process_projectile wouldn't have
+	pre_flight_visual_updates()   // And pre-flight ahead of time while waiting for subsystem to start handling it
+	dist_carry -= headstart / speed / 2 // Remove some of headstart for upcoming real tick
 
-	// Schedule the projectile and let it loose onto the world
+	// Extra visual offset on firing further away
+	pixel_x += sin(angle) * 16
+	pixel_y += cos(angle) * 16
+
+	// FINALLY schedule the projectile and let it loose onto the world and not our problem anymore
 	SSprojectiles.queue_projectile(src)
 
 /**
@@ -262,7 +271,6 @@
 
 	var/turf/current_turf = get_turf(src)
 	var/turf/next_turf = popleft(path)
-
 	// Check we can reach the turf at all based on pathed grid
 	var/proj_dir = get_dir(current_turf, next_turf)
 	if((proj_dir & (proj_dir - 1)) && !current_turf.Adjacent(next_turf))
@@ -278,7 +286,8 @@
 
 	// Actually move
 	forceMove(next_turf)
-	if(distance_travelled++ > 1)
+	distance_travelled++
+	if(distance_travelled > 1)
 		invisibility = 0
 
 	// Check we're still flying - in the highly unlikely but apparently possible case
@@ -325,10 +334,10 @@
 		post_flight_visual_updates()
 
 /// Update the visual angle for gliding move to make skimming path a bit less quirky
-/obj/item/projectile/proc/post_flight_visual_updates()
+/obj/item/projectile/proc/post_flight_visual_updates(default_angle = angle)
 	if(!glide_transform)
 		glide_transform = matrix()
-		glide_transform.Turn(angle)
+		glide_transform.Turn(default_angle)
 		glide_source = loc
 		apply_transform(glide_transform)
 		return
@@ -366,11 +375,8 @@
 
 
 /// Update the visual state of the bullet, to be ran before movement updates - so the glide is done with them
-/obj/item/projectile/proc/pre_flight_visual_update()
+/obj/item/projectile/proc/pre_flight_visual_updates()
 	SHOULD_NOT_SLEEP(TRUE)
-
-	// Smooth the glide
-	glide_size = round(speed * world.tick_lag * SSprojectiles.wait) * 1.1
 
 	// Unfortunately these projectiles don't know where they are at all times, despite the saying.
 	// Bresenham locates and pathes them based on the game grid (using getline2)
@@ -429,8 +435,8 @@
 	var/ampy  = effy2 - effy1
 
 	// Project back our location within our turf onto that intersect
-	display_x += Clamp(turf_part * ampx, -16, 16)
-	display_y += Clamp(turf_part * ampy, -16, 16)
+	display_x += Clamp(turf_part * ampx / 2, -16, 16)
+	display_y += Clamp(turf_part * ampy / 2, -16, 16)
 
 	// Finally done
 	pixel_x = round(display_x, 1)
@@ -1182,8 +1188,10 @@
 	if(P.ammo.sound_bounce) playsound(src, P.ammo.sound_bounce, 50, 1)
 	var/image/I = image('icons/obj/items/weapons/projectiles.dmi',src,P.ammo.ping,10)
 	var/angle = (P.firer && prob(60)) ? round(Get_Angle(P.firer,src)) : round(rand(1,359))
-	I.pixel_x += rand(-6,6)
-	I.pixel_y += rand(-6,6)
+	var/offset_x = (P.p_x + P.scatter_x) * 0.5 * Clamp(P.distance_travelled / P.ammo.max_range, 0, 1)
+	var/offset_y = (P.p_y + P.scatter_y) * 0.5 * Clamp(P.distance_travelled / P.ammo.max_range, 0, 1)
+	I.pixel_x += round(rand(-6,6) + offset_x, 1)
+	I.pixel_y += round(rand(-6,6) + offset_y, 1)
 
 	var/matrix/rotate = matrix()
 	rotate.Turn(angle)

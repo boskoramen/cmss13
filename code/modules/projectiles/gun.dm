@@ -1050,6 +1050,7 @@ and you're good to go.
 	if(!able_to_fire(user) || !target)
 		return
 
+	var/atom/movable/clicked_target = target
 	var/turf/curloc = get_turf(user) //In case the target or we are expired.
 	var/turf/targloc = get_turf(target)
 	if(!targloc || !curloc)
@@ -1131,11 +1132,22 @@ and you're good to go.
 
 		var/bullet_velocity = projectile_to_fire?.ammo?.shell_speed + velocity_add
 
-		if(params)
-			if(params["icon-x"])
-				projectile_to_fire.p_x = text2num(params["icon-x"]) - 16
-			if(params["icon-y"])
-				projectile_to_fire.p_y = text2num(params["icon-y"]) - 16
+		if(params) // Apply relative clicked position from the mouse info to offset projectile
+			if(params["vis-x"])
+				projectile_to_fire.p_x = text2num(params["vis-x"])
+			else if(params["icon-x"])
+				projectile_to_fire.p_x = text2num(params["icon-x"])
+			if(params["vis-y"])
+				projectile_to_fire.p_y = text2num(params["vis-y"])
+			else if(params["icon-y"])
+				projectile_to_fire.p_y = text2num(params["icon-y"])
+			if(istype(clicked_target) && !QDELETED(clicked_target))
+				projectile_to_fire.p_x -= clicked_target.bound_width / 2
+				projectile_to_fire.p_y -= clicked_target.bound_height / 2
+			else
+				projectile_to_fire.p_x -= world.icon_size / 2
+				projectile_to_fire.p_y -= world.icon_size / 2
+
 
 		//Finally, make with the pew pew!
 		if(QDELETED(projectile_to_fire) || !isobj(projectile_to_fire))

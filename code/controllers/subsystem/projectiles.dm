@@ -93,7 +93,7 @@ SUBSYSTEM_DEF(projectiles)
 		var/obj/item/projectile/projectile = vis_queue[vis_queue.len]
 		vis_queue.len--
 		if(!QDELETED(projectile))
-			projectile.pre_flight_visual_update()
+			projectile.pre_flight_visual_updates()
 
 	// Process bullet flight updates, actually moving them
 	while(fly_queue.len)

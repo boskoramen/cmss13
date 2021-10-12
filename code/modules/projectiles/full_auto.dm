@@ -63,7 +63,13 @@
 		return
 
 	fa_target = hovered
-	fa_params = params
+	fa_params = params2list(params)
+
+	// Strip exact click location
+	fa_params -= "vis-x"
+	fa_params -= "vis-y"
+	fa_params -= "icon-x"
+	fa_params -= "icon-y"
 
 /obj/item/weapon/gun/proc/repeat_fire(var/mob/user)
 	if(!fa_target)

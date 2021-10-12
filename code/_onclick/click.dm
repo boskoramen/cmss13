@@ -20,31 +20,30 @@
 /client/Click(atom/A, location, control, params)
 	if (control && !ignore_next_click)	// No .click macros allowed, and only one click per mousedown.
 		ignore_next_click = TRUE
-		return usr.do_click(A, location, params)
+		var/list/mods = params2list(params)
+		return usr.do_click(A, location, mods)
 
-var/global/clickid = 0
-/mob/proc/do_click(atom/A, location, params)
-	var/start_cooldown = next_move
-	var/real_start_cooldown = next_move
-	clickid++
-
+/mob/proc/do_click(atom/A, location, list/mods)
 	// We'll be sending a lot of signals and things later on, this will save time.
 	if(!client)
 		return
 	// No clicking on atoms with the NOINTERACT flag
 	if ((A.flags_atom & NOINTERACT))
 		if (istype(A, /obj/screen/click_catcher))
-			var/list/mods = params2list(params)
 			var/turf/TU = params2turf(mods["screen-loc"], get_turf(client.eye), client)
+			// Reset relative position which is now irrelevant
+			mods -= "icon-x"
+			mods -= "icon-y"
+			mods -= "vis-x"
+			mods -= "vis-y"
 			if (TU)
-				do_click(TU, location, params)
+				do_click(TU, location, mods)
 		return
 
 	if (world.time < next_click)
 		return
 
 	next_click = world.time + 1 //Maximum code-permitted clickrate 10.26/s, practical maximum manual rate: 8.5, autoclicker maximum: between 7.2/s and 8.5/s.
-	var/list/mods = params2list(params)
 
 	if (!clicked_something)
 		clicked_something = list("" = null)
@@ -70,17 +69,9 @@ var/global/clickid = 0
 		client.buildmode.object_click(src, mods, A)
 		return
 
-	if(start_cooldown != next_move)
-		to_world("\[[world.time]\] #[clickid] - signal interacts overriden next_move ! was [start_cooldown] now [next_move]")
-		start_cooldown = next_move
-
 	// Click handled elsewhere. (These clicks are not affected by the next_move cooldown)
-	if (click(A, mods) | A.clicked(src, mods, location, params))
+	if (click(A, mods) | A.clicked(src, mods, location, mods))
 		return
-
-	if(start_cooldown != next_move)
-		to_world("\[[world.time]\] #[clickid] - click/clicked overriden next_move but let us continue anyway ?! Was [start_cooldown] now [next_move]")
-		start_cooldown = next_move
 
 	// Default click functions from here on.
 
@@ -88,10 +79,6 @@ var/global/clickid = 0
 		return
 
 	face_atom(A)
-
-	if(start_cooldown != next_move)
-		to_world("\[[world.time]\] #[clickid] - facing overriden next_move ! was [start_cooldown] now [next_move]")
-		start_cooldown = next_move
 
 	// Special type of click.
 	if (is_mob_restrained())
@@ -126,8 +113,6 @@ var/global/clickid = 0
 		return
 
 	if (world.time <= next_move && A.loc != src)	// Attack click cooldown check
-		if(world.time > real_start_cooldown)
-			to_world("\[[world.time]\] #[clickid] - EATING CLICK. YUM.")
 		return
 
 	next_move = world.time
