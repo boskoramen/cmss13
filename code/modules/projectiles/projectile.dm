@@ -257,7 +257,7 @@
 	. = PROC_CRIT_FAIL // Sleeps ?! In my SHOULD_NOT_SLEEP proc ?!!!!
 
 	if(!speed)
-		return
+		return 0
 
 	var/dist = min(delta_time * speed, 1)
 	if(dist_carry + dist < 1) // Too slow, add to carry
@@ -268,6 +268,8 @@
 		dist_carry += dist - 1
 	// Otherwise moving faster than one turf, so don't touch carry, will be done later
 	. = delta_time - max(0, dist / speed)
+	if(. < 0)
+		log_debug("fira you suck, it's [.]")
 
 	var/turf/current_turf = get_turf(src)
 	var/turf/next_turf = popleft(path)
@@ -293,7 +295,7 @@
 	// Check we're still flying - in the highly unlikely but apparently possible case
 	// we hit something through forceMove callbacks that we didn't pick up in scan_a_turf
 	if(!speed)
-		return
+		return 0
 
 	// Process on move effects
 	if(distance_travelled == round(ammo.max_range / 2))
