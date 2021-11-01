@@ -233,7 +233,7 @@
 	var/tickdist = speed / SSprojectiles.wait * world.tick_lag
 	var/headstart = Clamp(rand() * (tickdist-1) + 1, min(1, tickdist), tickdist) // Move at least fast enough for one turf if possible
 	var/retval = process_projectile(headstart / speed)
-	if(retval == PROC_CRIT_FAIL || !speed)
+	if(retval == PROC_CRIT_FAIL || !src.speed)
 		return // Already hit something. Real ?
 	if(retval > 0)
 		post_flight_visual_updates()  // Run post flight updates now if process_projectile wouldn't have
@@ -268,8 +268,6 @@
 		dist_carry += dist - 1
 	// Otherwise moving faster than one turf, so don't touch carry, will be done later
 	. = delta_time - max(0, dist / speed)
-	if(. < 0)
-		log_debug("fira you suck, it's [.]")
 
 	var/turf/current_turf = get_turf(src)
 	var/turf/next_turf = popleft(path)
