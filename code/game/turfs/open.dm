@@ -751,9 +751,9 @@
 /turf/open/gm/river/Entered(atom/movable/AM)
 	..()
 
-	SEND_SIGNAL(AM, COMSIG_MOVABLE_ENTERED_RIVER, src, covered)
+	SEND_SIGNAL(entered, COMSIG_MOVABLE_ENTERED_RIVER, src, covered)
 
-	if(!iscarbon(AM) || AM.throwing)
+	if (covered || !iscarbon(entered) || entered.throwing)
 		return
 
 	if(!covered)
