@@ -141,7 +141,7 @@ GLOBAL_LIST_INIT(airlock_wire_descriptions, flatten_numeric_alist(alist(
 // no, i don't know why this provides stuff if you shoot it apart vs disassembling
 /obj/structure/machinery/door/airlock/deconstruct(disassembled = TRUE)
 	if(!disassembled)
-		if(width == 1)
+		if(height == 1)
 			new /obj/item/stack/rods(loc)
 			new /obj/item/stack/cable_coil/cut(loc)
 			new /obj/effect/spawner/gibspawner/robot(loc)

@@ -2,8 +2,6 @@
 	name = "Cargo Container"
 	desc = "A huge industrial shipping container.\nYou aren't supposed to see this."
 	icon = 'icons/obj/structures/props/containers/contain.dmi'
-	bound_width = 32
-	bound_height = 64
 	density = TRUE
 	health = 200
 	opacity = TRUE
@@ -12,6 +10,12 @@
 	var/bullet_damage_multiplier = 0.2
 	///multiples any demage taken from explosion
 	var/explosion_damage_multiplier = 2
+	var/width = 1
+	var/height = 2
+
+/obj/structure/cargo_container/Initialize(mapload, ...)
+	. = ..()
+	AddElement(/datum/element/multitile, width, height, can_block_movement)
 
 /obj/structure/cargo_container/bullet_act(obj/projectile/projectile)
 	. = ..()
@@ -291,8 +295,8 @@
 	name = "Cargo Container"
 	desc = "A huge industrial shipping container."
 	icon = 'icons/obj/structures/props/containers/containHorizont.dmi'
-	bound_width = 64
-	bound_height = 32
+	width = 2
+	height = 1
 	density = TRUE
 	health = 200
 	opacity = TRUE

@@ -25,8 +25,7 @@
 
 /obj/structure/tent/Initialize(mapload, ...)
 	. = ..()
-	bound_width = x_dim * world.icon_size
-	bound_height = y_dim * world.icon_size
+	AddElement(/datum/element/multitile, x_dim, y_dim, can_block_movement)
 	// COMSIG_MOVABLE_TURF_ENTERED to handle ChangeTurf
 	RegisterSignal(src, COMSIG_MOVABLE_TURF_ENTERED, PROC_REF(register_turf_signals))
 	register_turf_signals()

@@ -202,8 +202,6 @@ GLOBAL_LIST_EMPTY(all_static_telecomms_towers)
 	icon_state = "static1"
 	toggled = FALSE
 	on = FALSE
-	bound_height = 64
-	bound_width = 64
 	freq_listening = list(COLONY_FREQ)
 	var/toggle_cooldown = 0
 
@@ -227,6 +225,7 @@ GLOBAL_LIST_EMPTY(all_static_telecomms_towers)
 	RegisterSignal(src, COMSIG_MOVABLE_TURF_ENTERED, PROC_REF(register_with_turf))
 	if(!mapload)
 		register_with_turf()
+	AddElement(/datum/element/multitile, 2, 2, can_block_movement)
 
 /// Handler for callback of COMSIG_MOVABLE_TURF_ENTERED (turf changed)
 /obj/structure/machinery/telecomms/relay/preset/tower/mapcomms/proc/register_with_turf(atom/movable/source, turf/new_turf)
