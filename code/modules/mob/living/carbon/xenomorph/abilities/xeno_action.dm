@@ -52,19 +52,19 @@
 	SHOULD_CALL_PARENT(TRUE)
 	if(!owner)
 		return FALSE
-	track_xeno_ability_stats()
+	track_xeno_action_stats()
 	for(var/datum/action/action in owner.actions)
 		action.update_button_icon()
 	return TRUE
 
 // Track statistics for this ability
-/datum/action/xeno_action/proc/track_xeno_ability_stats()
+/datum/action/xeno_action/proc/track_xeno_action_stats()
 	if(!owner)
 		return
 	var/mob/living/carbon/xenomorph/xeno = owner
 	if (name && GLOB.round_statistics)
-		GLOB.round_statistics.track_ability_usage(name)
-		xeno.track_ability_usage(name, xeno.caste_type)
+		GLOB.round_statistics.track_action_usage(name)
+		xeno.track_action_usage(name, xeno.caste_type)
 
 /datum/action/xeno_action/can_use_action()
 	if(!owner)
@@ -162,29 +162,29 @@
 	if(hidden)
 		return // There's no where we want a hidden action to be selectable right?
 	var/mob/living/carbon/xenomorph/xeno = owner
-	if(xeno.selected_ability == src)
+	if(xeno.selected_action == src)
 		if(xeno.deselect_timer > world.time)
 			return // We clicked the same ability in a very short time
 		if(xeno.client && xeno.client.prefs && xeno.client.prefs.toggle_prefs & TOGGLE_ABILITY_DEACTIVATION_OFF)
 			return
-		to_chat(xeno, "You will no longer use [name] with [xeno.get_ability_mouse_name()].")
+		to_chat(xeno, "You will no longer use [name] with [xeno.get_action_mouse_name()].")
 		button.icon_state = "template"
-		xeno.set_selected_ability(null)
+		xeno.set_selected_action(null)
 		if(charge_time)
-			stop_charging_ability()
+			stop_charging_action()
 	else
-		to_chat(xeno, "You will now use [name] with [xeno.get_ability_mouse_name()].")
-		if(xeno.selected_ability)
-			xeno.selected_ability.action_deselect()
-			if(xeno.selected_ability.charge_time)
-				xeno.selected_ability.stop_charging_ability()
+		to_chat(xeno, "You will now use [name] with [xeno.get_action_mouse_name()].")
+		if(xeno.selected_action)
+			xeno.selected_action.action_deselect()
+			if(xeno.selected_action.charge_time)
+				xeno.selected_action.stop_charging_action()
 		button.icon_state = "template_on"
-		xeno.set_selected_ability(src)
+		xeno.set_selected_action(src)
 		xeno.deselect_timer = world.time + 5 // Half a second
 		if(charges != NO_ACTION_CHARGES)
 			to_chat(xeno, SPAN_INFO("It has [charges] uses left."))
 		if(charge_time)
-			start_charging_ability()
+			start_charging_action()
 
 // Called when a different action is clicked on and this one is deselected.
 /datum/action/xeno_action/activable/proc/action_deselect()
@@ -193,8 +193,8 @@
 
 /datum/action/xeno_action/activable/remove_from(mob/living/carbon/xenomorph/xeno)
 	..()
-	if(xeno.selected_ability == src)
-		xeno.set_selected_ability(null)
+	if(xeno.selected_action == src)
+		xeno.set_selected_action(null)
 	if(macro_path)
 		remove_verb(xeno, macro_path)
 
@@ -351,16 +351,16 @@
 		else
 			to_chat(owner, SPAN_XENODANGER("We feel our strength return! We can use [name] again!"))
 
-/datum/action/xeno_action/proc/start_charging_ability()
-	charge_timer_id = addtimer(CALLBACK(src, PROC_REF(finish_charging_ability)), charge_time, TIMER_UNIQUE|TIMER_STOPPABLE)
+/datum/action/xeno_action/proc/start_charging_action()
+	charge_timer_id = addtimer(CALLBACK(src, PROC_REF(finish_charging_action)), charge_time, TIMER_UNIQUE|TIMER_STOPPABLE)
 	to_chat(owner, SPAN_XENOWARNING("We start charging up our <b>[name]</b>!"))
 
-/datum/action/xeno_action/proc/finish_charging_ability()
+/datum/action/xeno_action/proc/finish_charging_action()
 	charge_timer_id = TIMER_ID_NULL
 	charge_ready = TRUE
 	update_button_icon()
 
-/datum/action/xeno_action/proc/stop_charging_ability()
+/datum/action/xeno_action/proc/stop_charging_action()
 	charge_ready = FALSE
 	update_button_icon()
 	if(charge_timer_id == TIMER_ID_NULL)
@@ -447,6 +447,6 @@
 		return
 	action_active = TRUE
 	button.icon_state = "template_active"
-	track_xeno_ability_stats()
+	track_xeno_action_stats()
 	if(action_start_message)
 		to_chat(owner, SPAN_NOTICE(action_start_message))

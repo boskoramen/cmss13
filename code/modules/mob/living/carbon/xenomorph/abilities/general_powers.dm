@@ -928,7 +928,7 @@
 	if(!stabbing_xeno.check_state() || stabbing_xeno.cannot_slash)
 		return FALSE
 
-	var/pre_result = pre_ability_act(stabbing_xeno, targetted_atom)
+	var/pre_result = pre_action_act(stabbing_xeno, targetted_atom)
 
 	if(pre_result)
 		return FALSE
@@ -1000,7 +1000,7 @@
 	..()
 	return result
 
-/datum/action/xeno_action/activable/tail_stab/proc/pre_ability_act(mob/living/carbon/xenomorph/stabbing_xeno, atom/targetted_atom)
+/datum/action/xeno_action/activable/tail_stab/proc/pre_action_act(mob/living/carbon/xenomorph/stabbing_xeno, atom/targetted_atom)
 	return
 
 /datum/action/xeno_action/activable/tail_stab/proc/ability_act(mob/living/carbon/xenomorph/stabbing_xeno, mob/living/carbon/target, obj/limb/limb)

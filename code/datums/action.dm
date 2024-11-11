@@ -128,7 +128,7 @@
 	update_action_buttons()
 
 /mob/living/carbon/human/handle_remove_action(datum/action/action)
-	if(selected_ability == action)
+	if(selected_action == action)
 		action.action_activate()
 	return ..()
 

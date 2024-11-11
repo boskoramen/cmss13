@@ -86,7 +86,7 @@
 /datum/behavior_delegate/praetorian_warden/proc/remove_internal_hitpoints(amount)
 	add_internal_hitpoints(-1*amount)
 
-/datum/behavior_delegate/praetorian_warden/proc/use_internal_hp_ability(cost)
+/datum/behavior_delegate/praetorian_warden/proc/use_internal_hp_action(cost)
 	if (cost > internal_hitpoints)
 		to_chat(bound_xeno, SPAN_XENODANGER("Your health reserves are insufficient! You need at least [cost] to do that!"))
 		return FALSE

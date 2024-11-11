@@ -73,21 +73,21 @@
 			found = trap
 			break
 
-	var/datum/action/xeno_action/activable/boiler_trap/trap_ability = get_action(bound_xeno, /datum/action/xeno_action/activable/boiler_trap)
+	var/datum/action/xeno_action/activable/boiler_trap/trap_action = get_action(bound_xeno, /datum/action/xeno_action/activable/boiler_trap)
 	if (found)
 		target_human.apply_armoured_damage(bonus_damage_shotgun_trapped, ARMOR_BIO, BURN)
-		trap_ability.empowering_charge_counter = trap_ability.empower_charge_max
+		trap_action.empowering_charge_counter = trap_action.empower_charge_max
 	else
 		target_human.adjust_effect(2, SLOW)
-		trap_ability.empowering_charge_counter++
+		trap_action.empowering_charge_counter++
 
-	if(!trap_ability.empowered && trap_ability.empowering_charge_counter >= trap_ability.empower_charge_max)
-		trap_ability.empowered = TRUE
-		trap_ability.button.overlays += "+empowered"
-		to_chat(bound_xeno, SPAN_XENODANGER("You have gained sufficient insight in your prey to empower your next [trap_ability.name]."))
+	if(!trap_action.empowered && trap_action.empowering_charge_counter >= trap_action.empower_charge_max)
+		trap_action.empowered = TRUE
+		trap_action.button.overlays += "+empowered"
+		to_chat(bound_xeno, SPAN_XENODANGER("You have gained sufficient insight in your prey to empower your next [trap_action.name]."))
 
-	if(trap_ability.empowering_charge_counter > trap_ability.empower_charge_max)
-		trap_ability.empowering_charge_counter = trap_ability.empower_charge_max
+	if(trap_action.empowering_charge_counter > trap_action.empower_charge_max)
+		trap_action.empowering_charge_counter = trap_action.empower_charge_max
 
 /datum/behavior_delegate/boiler_trapper/on_life()
 	if ((temp_movespeed_time_used + temp_movespeed_cooldown) < world.time)

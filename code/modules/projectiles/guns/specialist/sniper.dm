@@ -66,17 +66,17 @@
 	if(!ishuman(owner))
 		return
 	var/mob/living/carbon/human/H = owner
-	if(H.selected_ability == src)
-		to_chat(H, "You will no longer use [name] with [H.get_ability_mouse_name()].")
+	if(H.selected_action == src)
+		to_chat(H, "You will no longer use [name] with [H.get_action_mouse_name()].")
 		button.icon_state = "template"
-		H.set_selected_ability(null)
+		H.set_selected_action(null)
 	else
-		to_chat(H, "You will now use [name] with [H.get_ability_mouse_name()].")
-		if(H.selected_ability)
-			H.selected_ability.button.icon_state = "template"
-			H.set_selected_ability(null)
+		to_chat(H, "You will now use [name] with [H.get_action_mouse_name()].")
+		if(H.selected_action)
+			H.selected_action.button.icon_state = "template"
+			H.set_selected_action(null)
 		button.icon_state = "template_on"
-		H.set_selected_ability(src)
+		H.set_selected_action(src)
 
 /datum/action/item_action/specialist/aimed_shot/can_use_action()
 	var/mob/living/carbon/human/H = owner

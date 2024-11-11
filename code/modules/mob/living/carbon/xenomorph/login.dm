@@ -6,5 +6,5 @@
 			generate_name()
 	if(SSticker.mode)
 		SSticker.mode.xenomorphs |= mind
-	if(selected_ability)
-		set_selected_ability(null)
+	if(selected_action)
+		set_selected_action(null)

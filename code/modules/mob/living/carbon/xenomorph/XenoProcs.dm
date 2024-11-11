@@ -56,14 +56,14 @@
 
 	. += "Shield: [shieldtotal]"
 
-	if(selected_ability)
+	if(selected_action)
 		. += ""
-		. += "Selected Ability: [selected_ability.name]"
-		if(selected_ability.charges != NO_ACTION_CHARGES)
-			. += "Charges Left: [selected_ability.charges]"
+		. += "Selected Action: [selected_action.name]"
+		if(selected_action.charges != NO_ACTION_CHARGES)
+			. += "Charges Left: [selected_action.charges]"
 
-		if(selected_ability.cooldown_timer_id != TIMER_ID_NULL)
-			. += "On Cooldown: [DisplayTimeText(timeleft(selected_ability.cooldown_timer_id))]"
+		if(selected_action.cooldown_timer_id != TIMER_ID_NULL)
+			. += "On Cooldown: [DisplayTimeText(timeleft(selected_action.cooldown_timer_id))]"
 
 	. += ""
 

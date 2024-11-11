@@ -13,7 +13,7 @@
 
 /mob/living/carbon/human/click(atom/A, list/mods)
 	var/use_action = FALSE
-	switch(get_ability_mouse_key())
+	switch(get_action_mouse_key())
 		if(XENO_ABILITY_CLICK_SHIFT)
 			if(mods[SHIFT_CLICK] && mods[LEFT_CLICK])
 				use_action = TRUE
@@ -24,8 +24,8 @@
 			if(mods[RIGHT_CLICK])
 				use_action = TRUE
 
-	if(selected_ability && use_action)
-		selected_ability.use_action(A)
+	if(selected_action && use_action)
+		selected_action.use_action(A)
 		return TRUE
 
 	if(interactee)

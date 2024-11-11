@@ -285,7 +285,7 @@
 
 	var/breathing_counter = 0
 	var/ovipositor = FALSE //whether the Queen is attached to an ovipositor
-	var/queen_ability_cooldown = 0
+	var/queen_action_cooldown = 0
 	var/egg_amount = 0 //amount of eggs inside the queen
 	var/screech_sound_effect_list = list('sound/voice/alien_queen_screech.ogg') //the noise the Queen makes when she screeches. Done this way for VV purposes.
 	var/queen_ovipositor_icon
@@ -429,9 +429,9 @@
 	for(var/datum/action/xeno_action/action in actions)
 		// Also update the choose_resin icon since it resets
 		if(istype(action, /datum/action/xeno_action/onclick/choose_resin))
-			var/datum/action/xeno_action/onclick/choose_resin/choose_resin_ability = action
-			if(choose_resin_ability)
-				choose_resin_ability.update_button_icon(selected_resin)
+			var/datum/action/xeno_action/onclick/choose_resin/choose_resin_action = action
+			if(choose_resin_action)
+				choose_resin_action.update_button_icon(selected_resin)
 				break // Don't need to keep looking
 
 	if(hive.dynamic_evolution && !queen_aged)
@@ -516,9 +516,9 @@
 		action.hide_from(src)
 		// Also update the choose_resin icon since it resets
 		if(istype(action, /datum/action/xeno_action/onclick/choose_resin))
-			var/datum/action/xeno_action/onclick/choose_resin/choose_resin_ability = action
-			if(choose_resin_ability)
-				choose_resin_ability.update_button_icon(selected_resin)
+			var/datum/action/xeno_action/onclick/choose_resin/choose_resin_action = action
+			if(choose_resin_action)
+				choose_resin_action.update_button_icon(selected_resin)
 
 	var/list/abilities_to_give = mobile_abilities.Copy()
 
@@ -621,11 +621,11 @@
 		return FALSE
 
 	// Get a reference to the ability to utilize cooldowns
-	var/datum/action/xeno_action/onclick/queen_word/word_ability
+	var/datum/action/xeno_action/onclick/queen_word/word_action
 	for(var/datum/action/xeno_action/action in actions)
 		if(istype(action, /datum/action/xeno_action/onclick/queen_word))
-			word_ability = action
-			if(!word_ability.action_cooldown_check())
+			word_action = action
+			if(!word_action.action_cooldown_check())
 				return FALSE
 			break
 
@@ -634,8 +634,8 @@
 		return FALSE
 
 	use_plasma(50)
-	if(word_ability)
-		word_ability.apply_cooldown()
+	if(word_action)
+		word_action.apply_cooldown()
 
 	xeno_announcement(input, hivenumber, "The words of the [name] reverberate in our head...")
 
@@ -851,9 +851,9 @@
 		action.hide_from(src)
 		// Also update the choose_resin icon since it resets
 		if(istype(action, /datum/action/xeno_action/onclick/choose_resin))
-			var/datum/action/xeno_action/onclick/choose_resin/choose_resin_ability = action
-			if(choose_resin_ability)
-				choose_resin_ability.update_button_icon(selected_resin)
+			var/datum/action/xeno_action/onclick/choose_resin/choose_resin_action = action
+			if(choose_resin_action)
+				choose_resin_action.update_button_icon(selected_resin)
 
 	var/list/immobile_abilities = list(
 		// These already have their placement locked in:
@@ -945,8 +945,8 @@
 	egg_planting_range = initial(egg_planting_range)
 	for(var/datum/action/xeno_action/action in actions)
 		if(istype(action, /datum/action/xeno_action/onclick/grow_ovipositor))
-			var/datum/action/xeno_action/onclick/grow_ovipositor/ovi_ability = action
-			ovi_ability.apply_cooldown()
+			var/datum/action/xeno_action/onclick/grow_ovipositor/ovi_action = action
+			ovi_action.apply_cooldown()
 			break
 	anchored = FALSE
 

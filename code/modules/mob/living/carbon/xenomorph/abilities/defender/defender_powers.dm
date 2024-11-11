@@ -170,13 +170,13 @@
 		RegisterSignal(owner, COMSIG_XENO_ENTER_CRIT, PROC_REF(unconscious_check))
 		RegisterSignal(owner, COMSIG_MOB_DEATH, PROC_REF(unconscious_check))
 		fortify_switch(xeno, TRUE)
-		if(xeno.selected_ability != src)
+		if(xeno.selected_action != src)
 			button.icon_state = "template_active"
 	else
 		UnregisterSignal(owner, COMSIG_XENO_ENTER_CRIT)
 		UnregisterSignal(owner, COMSIG_MOB_DEATH)
 		fortify_switch(xeno, FALSE)
-		if(xeno.selected_ability != src)
+		if(xeno.selected_action != src)
 			button.icon_state = "template"
 
 	apply_cooldown()
@@ -186,7 +186,7 @@
 	. = ..()
 	..()
 	var/mob/living/carbon/xenomorph/xeno = owner
-	if(xeno.fortify && xeno.selected_ability != src)
+	if(xeno.fortify && xeno.selected_action != src)
 		button.icon_state = "template_active"
 
 /datum/action/xeno_action/activable/fortify/action_deselect()

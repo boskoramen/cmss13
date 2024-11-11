@@ -286,7 +286,7 @@
 /datum/action/xeno_action/activable/healer_sacrifice/action_activate()
 	. = ..()
 	var/mob/living/carbon/xenomorph/xeno = owner
-	if(xeno.selected_ability != src)
+	if(xeno.selected_action != src)
 		return
 	var/datum/behavior_delegate/drone_healer/behavior_delegate = xeno.behavior_delegate
 	if(!istype(behavior_delegate))

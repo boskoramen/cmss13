@@ -1269,16 +1269,16 @@ GLOBAL_LIST_INIT(bgstate_options, list(
 					// so that the `activable` type is the parent of both xeno/human abilities - it would get rid of this headache in an instant.
 					if(isxeno(user))
 						var/mob/living/carbon/xenomorph/xeno = user
-						if(xeno.selected_ability)
-							var/datum/action/xeno_action/activable/ability = xeno.selected_ability
-							xeno.set_selected_ability(null)
-							xeno.set_selected_ability(ability)
+						if(xeno.selected_action)
+							var/datum/action/xeno_action/activable/action = xeno.selected_action
+							xeno.set_selected_action(null)
+							xeno.set_selected_action(action)
 					if(ishuman(user))
 						var/mob/living/carbon/human/human = user
-						if(human.selected_ability)
-							var/datum/action/human_action/activable/ability = human.selected_ability
-							human.set_selected_ability(null)
-							human.set_selected_ability(ability)
+						if(human.selected_action)
+							var/datum/action/human_action/activable/action = human.selected_action
+							human.set_selected_action(null)
+							human.set_selected_action(action)
 				if("synth_name")
 					var/raw_name = input(user, "Choose your Synthetic's name:", "Character Preference")  as text|null
 					if(raw_name) // Check to ensure that the user entered text (rather than cancel.)

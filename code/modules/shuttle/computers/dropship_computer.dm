@@ -30,7 +30,7 @@
 
 	var/can_change_shuttle = FALSE
 	var/faction = FACTION_MARINE
-	
+
 	/// If this computer should respect the faction variable of destination LZ
 	var/use_factions = TRUE
 
@@ -368,8 +368,8 @@
 	var/original_evilution = hive.evolution_bonus
 	hive.override_evilution(XENO_HIJACK_EVILUTION_BUFF, TRUE)
 	if(hive.living_xeno_queen)
-		var/datum/action/xeno_action/onclick/grow_ovipositor/ovi_ability = get_action(hive.living_xeno_queen, /datum/action/xeno_action/onclick/grow_ovipositor)
-		ovi_ability.reduce_cooldown(ovi_ability.xeno_cooldown)
+		var/datum/action/xeno_action/onclick/grow_ovipositor/ovi_action = get_action(hive.living_xeno_queen, /datum/action/xeno_action/onclick/grow_ovipositor)
+		ovi_action.reduce_cooldown(ovi_action.xeno_cooldown)
 	addtimer(CALLBACK(hive, TYPE_PROC_REF(/datum/hive_status, override_evilution), original_evilution, FALSE), XENO_HIJACK_EVILUTION_TIME)
 
 	// Notify the yautja too so they stop the hunt

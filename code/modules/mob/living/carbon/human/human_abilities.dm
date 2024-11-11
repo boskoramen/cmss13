@@ -1,10 +1,10 @@
-/mob/living/carbon/human/proc/set_selected_ability(datum/action/human_action/activable/ability)
+/mob/living/carbon/human/proc/set_selected_action(datum/action/human_action/activable/ability)
 	if(!ability)
-		selected_ability = null
+		selected_action = null
 		client?.set_right_click_menu_mode(shift_only = FALSE)
 		return
-	selected_ability = ability
-	if(get_ability_mouse_key() == XENO_ABILITY_CLICK_RIGHT)
+	selected_action = ability
+	if(get_action_mouse_key() == XENO_ABILITY_CLICK_RIGHT)
 		client?.set_right_click_menu_mode(shift_only = TRUE)
 
 /datum/action/human_action/update_button_icon()
@@ -196,22 +196,22 @@ CULT
 	if(!ishuman(owner))
 		return
 	var/mob/living/carbon/human/H = owner
-	if(H.selected_ability == src)
-		to_chat(H, "You will no longer use [name] with [H.get_ability_mouse_name()].")
+	if(H.selected_action == src)
+		to_chat(H, "You will no longer use [name] with [H.get_action_mouse_name()].")
 		button.icon_state = "template"
-		H.set_selected_ability(null)
+		H.set_selected_action(null)
 	else
-		to_chat(H, "You will now use [name] with [H.get_ability_mouse_name()].")
-		if(H.selected_ability)
-			H.selected_ability.button.icon_state = "template"
-			H.set_selected_ability(null)
+		to_chat(H, "You will now use [name] with [H.get_action_mouse_name()].")
+		if(H.selected_action)
+			H.selected_action.button.icon_state = "template"
+			H.set_selected_action(null)
 		button.icon_state = "template_on"
-		H.set_selected_ability(src)
+		H.set_selected_action(src)
 
 /datum/action/human_action/activable/remove_from(mob/living/carbon/human/H)
 	..()
-	if(H.selected_ability == src)
-		H.set_selected_ability(null)
+	if(H.selected_action == src)
+		H.set_selected_action(null)
 
 /datum/action/human_action/activable/proc/use_action(mob/M)
 	return

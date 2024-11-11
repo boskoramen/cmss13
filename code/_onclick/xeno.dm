@@ -128,23 +128,23 @@ so that it doesn't double up on the delays) so that it applies the delay immedia
 				next_move = world.time + 3 // Some minimal delay so this isn't crazy spammy
 				return TRUE
 
-	var/preference = get_ability_mouse_key() // client is already tested to be non-null by caller
-	var/activate_ability = FALSE
+	var/preference = get_action_mouse_key() // client is already tested to be non-null by caller
+	var/activate_action = FALSE
 	switch(preference)
 		if(XENO_ABILITY_CLICK_MIDDLE)
-			activate_ability = middle_pressed && !shift_pressed
+			activate_action = middle_pressed && !shift_pressed
 		if(XENO_ABILITY_CLICK_RIGHT)
-			activate_ability = right_pressed
+			activate_action = right_pressed
 		if(XENO_ABILITY_CLICK_SHIFT)
-			activate_ability = left_pressed && shift_pressed
+			activate_action = left_pressed && shift_pressed
 
-	if(activate_ability && selected_ability)
+	if(activate_action && selected_action)
 		if(istype(target, /atom/movable/screen))
 			// Click through the UI: Currently this won't attempt to sprite click any mob there, just the turf
 			var/turf/turf = params2turf(mods["screen-loc"], get_turf(client.eye), client)
 			if(turf)
 				target = turf
-		selected_ability.use_action_wrapper(target, mods)
+		selected_action.use_action_wrapper(target, mods)
 		return TRUE
 
 	if(next_move >= world.time)

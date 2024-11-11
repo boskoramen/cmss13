@@ -1213,10 +1213,10 @@ can cause issues with ammo types getting mixed up during the burst.
 		. += SPAN_NOTICE("Use <b>toggle firemode</b> to toggle chamber-swapping.</b>")
 
 /obj/item/weapon/gun/shotgun/pump/dual_tube/do_toggle_firemode(datum/source, datum/keybinding, new_firemode)
-	var/datum/action/item_action/dual_tube/toggle_chamber_swap/chamber_swap_ability = locate() in actions
-	if(chamber_swap_ability)
+	var/datum/action/item_action/dual_tube/toggle_chamber_swap/chamber_swap_action = locate() in actions
+	if(chamber_swap_action)
 		//do_toggle_firemode is a signal handler. needs async to stop sleep override warnings
-		INVOKE_ASYNC(chamber_swap_ability, TYPE_PROC_REF(/datum/action/item_action/dual_tube/toggle_chamber_swap, action_activate))
+		INVOKE_ASYNC(chamber_swap_action, TYPE_PROC_REF(/datum/action/item_action/dual_tube/toggle_chamber_swap, action_activate))
 		return
 
 	. = ..()

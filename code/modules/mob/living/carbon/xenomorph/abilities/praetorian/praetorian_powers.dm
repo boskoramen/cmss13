@@ -107,7 +107,7 @@
 		return
 
 	activated_once = FALSE
-	button.icon_state = dash_user.selected_ability == src ? "template_on" : "template"
+	button.icon_state = dash_user.selected_action == src ? "template_on" : "template"
 
 	var/list/target_mobs = list()
 	var/list/L = orange(1, dash_user)
@@ -798,11 +798,11 @@
 		if (!istype(behavior))
 			return
 
-		if (!behavior.use_internal_hp_ability(shield_cost))
+		if (!behavior.use_internal_hp_action(shield_cost))
 			return
 
 		bonus_shield = behavior.internal_hitpoints*0.5
-		if (!behavior.use_internal_hp_ability(bonus_shield))
+		if (!behavior.use_internal_hp_action(bonus_shield))
 			bonus_shield = 0
 
 		var/total_shield_amount = shield_amount + bonus_shield
@@ -837,11 +837,11 @@
 		if (!istype(behavior))
 			return
 
-		if (!behavior.use_internal_hp_ability(heal_cost))
+		if (!behavior.use_internal_hp_action(heal_cost))
 			return
 
 		bonus_heal = behavior.internal_hitpoints*0.5
-		if (!behavior.use_internal_hp_ability(bonus_heal))
+		if (!behavior.use_internal_hp_action(bonus_heal))
 			bonus_heal = 0
 
 		to_chat(wardenbuff_user, SPAN_XENOHIGHDANGER("We heal [targetXeno]!"))
@@ -871,7 +871,7 @@
 		if (!istype(behavior))
 			return
 
-		if (!behavior.use_internal_hp_ability(debuff_cost))
+		if (!behavior.use_internal_hp_action(debuff_cost))
 			return
 
 		to_chat(wardenbuff_user, SPAN_XENOHIGHDANGER("We rejuvenate [targetXeno]!"))
@@ -936,7 +936,7 @@
 	if(!check_plasma_owner())
 		return
 
-	if(!behavior.use_internal_hp_ability(retrieve_cost))
+	if(!behavior.use_internal_hp_action(retrieve_cost))
 		return
 
 	if(!check_and_use_plasma_owner())

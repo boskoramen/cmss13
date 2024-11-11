@@ -88,7 +88,7 @@
 	brute_mod_override = null
 	burn_mod_override = null
 	assigned_squad = null
-	selected_ability = null
+	selected_action = null
 	remembered_dropped_objects = null
 
 /mob/living/carbon/human/get_status_tab_items()

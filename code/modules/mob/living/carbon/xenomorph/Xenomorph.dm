@@ -226,7 +226,7 @@
 	var/mob/living/carbon/xenomorph/observed_xeno // Overwatched xeno for xeno hivemind vision
 	var/need_weeds = TRUE // Do we need weeds to regen HP?
 	var/datum/behavior_delegate/behavior_delegate = null // Holds behavior delegate. Governs all 'unique' hooked behavior of the Xeno. Set by caste datums and strains.
-	var/datum/action/xeno_action/activable/selected_ability // Our currently selected ability
+	var/datum/action/xeno_action/activable/selected_action // Our currently selected ability
 	var/datum/action/xeno_action/activable/queued_action // Action to perform on the next click.
 	var/is_zoomed = FALSE
 	var/list/spit_types
@@ -705,7 +705,7 @@
 	r_store = null
 	l_store = null
 	ammo = null
-	selected_ability = null
+	selected_action = null
 	queued_action = null
 
 	QDEL_NULL(strain)

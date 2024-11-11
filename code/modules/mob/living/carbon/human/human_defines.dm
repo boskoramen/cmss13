@@ -158,7 +158,7 @@
 	appearance_flags = KEEP_TOGETHER | TILE_BOUND
 	throw_range = 4 // Humans can't be thrown that far
 
-	var/datum/action/human_action/activable/selected_ability
+	var/datum/action/human_action/activable/selected_action
 
 	///list of weakrefs of recently dropped objects
 	var/list/remembered_dropped_objects = list()

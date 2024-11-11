@@ -30,9 +30,9 @@
 	for(var/datum/action/xeno_action/action in hivelord.actions)
 		// Also update the choose_resin icon since it resets
 		if(istype(action, /datum/action/xeno_action/onclick/choose_resin))
-			var/datum/action/xeno_action/onclick/choose_resin/choose_resin_ability = action
-			if(choose_resin_ability)
-				choose_resin_ability.update_button_icon(hivelord.selected_resin)
+			var/datum/action/xeno_action/onclick/choose_resin/choose_resin_action = action
+			if(choose_resin_action)
+				choose_resin_action.update_button_icon(hivelord.selected_resin)
 				break // Don't need to keep looking
 
 /*

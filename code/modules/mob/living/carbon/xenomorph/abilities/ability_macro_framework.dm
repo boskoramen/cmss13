@@ -30,13 +30,13 @@
 
 /proc/handle_xeno_macro_activate(mob/living/carbon/xenomorph/xeno, datum/action/xeno_action/action)
 
-	var/datum/action/xeno_action/activable/activable_ability = action
+	var/datum/action/xeno_action/activable/activable_action = action
 
 	if (!istype(action))
 		return
 
-	if (activable_ability.can_use_action() && activable_ability.action_cooldown_check())
-		activable_ability.use_action_wrapper()
+	if (activable_action.can_use_action() && activable_action.action_cooldown_check())
+		activable_action.use_action_wrapper()
 
 // Queue an action for the next click. This will always work but should only be used for actions that actually NEED an atom to work
 // Other ones should just use the activate proc

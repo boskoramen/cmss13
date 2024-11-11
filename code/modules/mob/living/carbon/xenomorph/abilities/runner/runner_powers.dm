@@ -164,7 +164,7 @@
 		return
 
 	if(behavior_delegate.caboom_trigger)
-		cancel_ability()
+		cancel_action()
 		return
 
 	if(behavior_delegate.acid_amount < minimal_acid)
@@ -186,7 +186,7 @@
 	xeno.say(";FOR THE HIVE!!!")
 	return ..()
 
-/datum/action/xeno_action/activable/acider_for_the_hive/proc/cancel_ability()
+/datum/action/xeno_action/activable/acider_for_the_hive/proc/cancel_action()
 	var/mob/living/carbon/xenomorph/xeno = owner
 
 	if(!istype(xeno))
