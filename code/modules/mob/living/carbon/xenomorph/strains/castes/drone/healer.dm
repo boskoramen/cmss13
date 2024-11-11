@@ -59,7 +59,7 @@
 	ability_primacy = XENO_PRIMARY_ACTION_3
 	xeno_cooldown = 0.5 SECONDS
 
-/datum/action/xeno_action/activable/apply_salve/use_ability(atom/target_atom)
+/datum/action/xeno_action/activable/apply_salve/use_action(atom/target_atom)
 	if(!action_cooldown_check())
 		return
 	var/mob/living/carbon/xenomorph/xeno = owner
@@ -219,7 +219,7 @@
 	var/action_name = "Sacrifice"
 	handle_xeno_macro(src, action_name)
 
-/datum/action/xeno_action/activable/healer_sacrifice/use_ability(atom/atom)
+/datum/action/xeno_action/activable/healer_sacrifice/use_action(atom/atom)
 	var/mob/living/carbon/xenomorph/xeno = owner
 	var/mob/living/carbon/xenomorph/target = atom
 

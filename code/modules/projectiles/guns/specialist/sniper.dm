@@ -83,7 +83,7 @@
 	if(istype(H) && !H.is_mob_incapacitated() && (holder_item == H.r_hand || holder_item || H.l_hand))
 		return TRUE
 
-/datum/action/item_action/specialist/aimed_shot/proc/use_ability(atom/A)
+/datum/action/item_action/specialist/aimed_shot/proc/use_action(atom/A)
 	var/mob/living/carbon/human/human = owner
 	if(!istype(A, /mob/living))
 		return

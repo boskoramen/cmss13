@@ -202,7 +202,7 @@
 				return
 
 			var/datum/action/xeno_action/A = get_action(xenoSrc, /datum/action/xeno_action/activable/queen_give_plasma)
-			A?.use_ability_wrapper(xenoTarget)
+			A?.use_action_wrapper(xenoTarget)
 
 		if("heal")
 			var/mob/living/carbon/xenomorph/xenoTarget = locate(params["target_ref"]) in GLOB.living_xeno_list
@@ -215,7 +215,7 @@
 				return
 
 			var/datum/action/xeno_action/A = get_action(xenoSrc, /datum/action/xeno_action/activable/queen_heal)
-			A?.use_ability_wrapper(xenoTarget, TRUE)
+			A?.use_action_wrapper(xenoTarget, TRUE)
 
 		if("overwatch")
 			var/mob/living/carbon/xenomorph/xenoTarget = locate(params["target_ref"]) in GLOB.living_xeno_list

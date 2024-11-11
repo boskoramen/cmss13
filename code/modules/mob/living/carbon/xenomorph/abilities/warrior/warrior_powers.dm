@@ -1,4 +1,4 @@
-/datum/action/xeno_action/activable/lunge/use_ability(atom/affected_atom)
+/datum/action/xeno_action/activable/lunge/use_action(atom/affected_atom)
 	var/mob/living/carbon/xenomorph/lunge_user = owner
 
 	if (!action_cooldown_check())
@@ -44,7 +44,7 @@
 
 	return TRUE
 
-/datum/action/xeno_action/activable/fling/use_ability(atom/affected_atom)
+/datum/action/xeno_action/activable/fling/use_action(atom/affected_atom)
 	var/mob/living/carbon/xenomorph/fling_user = owner
 
 	if (!action_cooldown_check())
@@ -98,7 +98,7 @@
 	apply_cooldown()
 	return ..()
 
-/datum/action/xeno_action/activable/warrior_punch/use_ability(atom/affected_atom)
+/datum/action/xeno_action/activable/warrior_punch/use_action(atom/affected_atom)
 	var/mob/living/carbon/xenomorph/punch_user = owner
 
 	if (!action_cooldown_check())

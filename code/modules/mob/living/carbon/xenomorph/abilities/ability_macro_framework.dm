@@ -36,7 +36,7 @@
 		return
 
 	if (activable_ability.can_use_action() && activable_ability.action_cooldown_check())
-		activable_ability.use_ability_wrapper()
+		activable_ability.use_action_wrapper()
 
 // Queue an action for the next click. This will always work but should only be used for actions that actually NEED an atom to work
 // Other ones should just use the activate proc

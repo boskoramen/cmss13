@@ -144,7 +144,7 @@ so that it doesn't double up on the delays) so that it applies the delay immedia
 			var/turf/turf = params2turf(mods["screen-loc"], get_turf(client.eye), client)
 			if(turf)
 				target = turf
-		selected_ability.use_ability_wrapper(target, mods)
+		selected_ability.use_action_wrapper(target, mods)
 		return TRUE
 
 	if(next_move >= world.time)

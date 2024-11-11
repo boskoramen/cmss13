@@ -15,7 +15,7 @@
 		return FALSE
 	return ..()
 
-/datum/action/xeno_action/onclick/build_tunnel/use_ability(atom/A)
+/datum/action/xeno_action/onclick/build_tunnel/use_action(atom/A)
 	var/mob/living/carbon/xenomorph/X = owner
 	if(!X.check_state())
 		return
@@ -113,7 +113,7 @@
 	no_cooldown_msg = FALSE // Needed for onclick actions
 	ability_primacy = XENO_SCREECH
 
-/datum/action/xeno_action/onclick/screech/use_ability(atom/target)
+/datum/action/xeno_action/onclick/screech/use_action(atom/target)
 	var/mob/living/carbon/xenomorph/queen/xeno = owner
 
 	if (!istype(xeno))
@@ -173,7 +173,7 @@
 	plasma_cost = 200
 	cooldown_message = "You feel your anger return. You are ready to gut again."
 
-/datum/action/xeno_action/activable/gut/use_ability(atom/target)
+/datum/action/xeno_action/activable/gut/use_action(atom/target)
 	var/mob/living/carbon/xenomorph/queen/xeno = owner
 	if(!action_cooldown_check())
 		return
@@ -186,7 +186,7 @@
 	action_icon_state = "psychic_whisper"
 	plasma_cost = 0
 
-/datum/action/xeno_action/onclick/psychic_whisper/use_ability(atom/A)
+/datum/action/xeno_action/onclick/psychic_whisper/use_action(atom/A)
 	var/mob/living/carbon/xenomorph/xeno_player = owner
 	if(xeno_player.client.prefs.muted & MUTE_IC)
 		to_chat(xeno_player, SPAN_DANGER("You cannot whisper (muted)."))
@@ -236,7 +236,7 @@
 	action_icon_state = "psychic_radiance"
 	plasma_cost = 100
 
-/datum/action/xeno_action/onclick/psychic_radiance/use_ability(atom/A)
+/datum/action/xeno_action/onclick/psychic_radiance/use_action(atom/A)
 	var/mob/living/carbon/xenomorph/xeno_player = owner
 	if(xeno_player.client.prefs.muted & MUTE_IC)
 		to_chat(xeno_player, SPAN_DANGER("You cannot whisper (muted)."))
@@ -286,7 +286,7 @@
 	ability_primacy = XENO_PRIMARY_ACTION_2
 	xeno_cooldown = 12 SECONDS
 
-/datum/action/xeno_action/activable/queen_give_plasma/use_ability(atom/A)
+/datum/action/xeno_action/activable/queen_give_plasma/use_action(atom/A)
 	var/mob/living/carbon/xenomorph/queen/X = owner
 	if(!X.check_state())
 		return
@@ -329,7 +329,7 @@
 	action_icon_state = "queen_order"
 	plasma_cost = 100
 
-/datum/action/xeno_action/onclick/queen_order/use_ability(atom/A)
+/datum/action/xeno_action/onclick/queen_order/use_action(atom/A)
 	var/mob/living/carbon/xenomorph/queen/X = owner
 	if(!X.check_state())
 		return
@@ -360,7 +360,7 @@
 	plasma_cost = 50
 	xeno_cooldown = 10 SECONDS
 
-/datum/action/xeno_action/onclick/queen_word/use_ability(atom/target)
+/datum/action/xeno_action/onclick/queen_word/use_action(atom/target)
 	var/mob/living/carbon/xenomorph/queen/xeno = owner
 	// We don't test or apply the cooldown here because the proc does it since verbs can activate it too
 	xeno.hive_message()
@@ -371,7 +371,7 @@
 	action_icon_state = "toggle_queen_zoom"
 	plasma_cost = 0
 
-/datum/action/xeno_action/onclick/queen_tacmap/use_ability(atom/target)
+/datum/action/xeno_action/onclick/queen_tacmap/use_action(atom/target)
 	var/mob/living/carbon/xenomorph/queen/xeno = owner
 	xeno.xeno_tacmap()
 	return ..()

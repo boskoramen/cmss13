@@ -1,4 +1,4 @@
-/datum/action/xeno_action/activable/slowing_spit/use_ability(atom/target)
+/datum/action/xeno_action/activable/slowing_spit/use_action(atom/target)
 	var/mob/living/carbon/xenomorph/slowspit_user = owner
 	if(!slowspit_user.check_state())
 		return
@@ -30,7 +30,7 @@
 	apply_cooldown()
 	return ..()
 
-/datum/action/xeno_action/activable/scattered_spit/use_ability(atom/target)
+/datum/action/xeno_action/activable/scattered_spit/use_action(atom/target)
 	var/mob/living/carbon/xenomorph/scatterspit_user = owner
 	if(!scatterspit_user.check_state())
 		return
@@ -62,7 +62,7 @@
 	apply_cooldown()
 	return ..()
 
-/datum/action/xeno_action/onclick/paralyzing_slash/use_ability(atom/target)
+/datum/action/xeno_action/onclick/paralyzing_slash/use_action(atom/target)
 	var/mob/living/carbon/xenomorph/paraslash_user = owner
 
 	if (!istype(paraslash_user))

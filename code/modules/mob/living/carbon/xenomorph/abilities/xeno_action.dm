@@ -47,8 +47,8 @@
 // Should where possible modify no state on the host Xenos besides
 // state intrinsic to all Xenos.
 // Any strain or caste-specific state should be stored on behavior_delegate objects
-// which use_ability invocations can modify using typechecks and typecasts where appropriate.
-/datum/action/xeno_action/proc/use_ability(atom/target)
+// which use_action invocations can modify using typechecks and typecasts where appropriate.
+/datum/action/xeno_action/proc/use_action(atom/target)
 	SHOULD_CALL_PARENT(TRUE)
 	if(!owner)
 		return FALSE
@@ -125,8 +125,8 @@
 	var/mob/living/carbon/xenomorph/X = owner
 	X.use_plasma(plasma_to_check)
 
-/// A wrapper for use_ability that sends a signal
-/datum/action/xeno_action/proc/use_ability_wrapper(...)
+/// A wrapper for use_action that sends a signal
+/datum/action/xeno_action/proc/use_action_wrapper(...)
 	// TODO: make hidden a part of can_use_action
 	if(!can_use_action())
 		SEND_SIGNAL(src, COMSIG_XENO_FAILED_ACTION_USED, owner)
@@ -134,7 +134,7 @@
 
 	SEND_SIGNAL(src, COMSIG_XENO_PRE_ACTION_USED, owner)
 
-	if(!hidden && use_ability(arglist(args)))
+	if(!hidden && use_action(arglist(args)))
 		SEND_SIGNAL(src, COMSIG_XENO_ACTION_USED, owner)
 		return TRUE
 
@@ -146,7 +146,7 @@
 	return
 
 // Activable actions - most abilities in the game. Require Shift/Middle click to do their 'main' effects.
-// The action_activate code of these actions does NOT call use_ability.
+// The action_activate code of these actions does NOT call use_action.
 /datum/action/xeno_action/activable
 
 /datum/action/xeno_action/activable/can_use_action()
@@ -200,14 +200,14 @@
 
 
 // 'Onclick' actions - the bulk of the ability's work is done when the button is clicked. Just a thin wrapper that immediately calls into
-// use_ability. Anything that uses onclick should not require an argument to be handed to action_activate in order to function.
+// use_action. Anything that uses onclick should not require an argument to be handed to action_activate in order to function.
 /datum/action/xeno_action/onclick
 	action_type = XENO_ACTION_CLICK
 	no_cooldown_msg = TRUE
 
 /datum/action/xeno_action/onclick/action_activate()
 	. = ..()
-	use_ability_wrapper(null)
+	use_action_wrapper(null)
 
 // Adds a cooldown to this
 // According to the cooldown variables set on this and

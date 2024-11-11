@@ -1,7 +1,7 @@
 
 ////////// BASE RAV POWERS
 
-/datum/action/xeno_action/onclick/empower/use_ability(atom/target)
+/datum/action/xeno_action/onclick/empower/use_action(atom/target)
 	var/mob/living/carbon/xenomorph/xeno = owner
 	if(!xeno.check_state())
 		return
@@ -130,7 +130,7 @@
 
 	xeno.throw_carbon(human, facing, behavior.fling_distance, SPEED_VERY_FAST, shake_camera = FALSE, immobilize = TRUE)
 
-/datum/action/xeno_action/activable/scissor_cut/use_ability(atom/target_atom)
+/datum/action/xeno_action/activable/scissor_cut/use_action(atom/target_atom)
 	var/mob/living/carbon/xenomorph/ravager_user = owner
 
 	if (!action_cooldown_check())
@@ -217,7 +217,7 @@
 
 ///////////// BERSERKER POWERS
 
-/datum/action/xeno_action/onclick/apprehend/use_ability(atom/affected_atom)
+/datum/action/xeno_action/onclick/apprehend/use_action(atom/affected_atom)
 	var/mob/living/carbon/xenomorph/xeno = owner
 
 	if (!istype(xeno))
@@ -271,7 +271,7 @@
 	to_chat(xeno, SPAN_XENODANGER("We have waited too long, our slash will no longer slow enemies!"))
 
 
-/datum/action/xeno_action/activable/clothesline/use_ability(atom/affected_atom)
+/datum/action/xeno_action/activable/clothesline/use_action(atom/affected_atom)
 	var/mob/living/carbon/xenomorph/xeno = owner
 
 	if (!action_cooldown_check())
@@ -340,7 +340,7 @@
 	apply_cooldown()
 	return ..()
 
-/datum/action/xeno_action/activable/eviscerate/use_ability(atom/affected_atom)
+/datum/action/xeno_action/activable/eviscerate/use_action(atom/affected_atom)
 	var/mob/living/carbon/xenomorph/xeno = owner
 
 	if(!action_cooldown_check() || xeno.action_busy)
@@ -424,7 +424,7 @@
 
 ////////// HEDGEHOG POWERS
 
-/datum/action/xeno_action/onclick/spike_shield/use_ability(atom/target)
+/datum/action/xeno_action/onclick/spike_shield/use_action(atom/target)
 	var/mob/living/carbon/xenomorph/xeno = owner
 
 	if (!action_cooldown_check())
@@ -484,7 +484,7 @@
 	xeno.overlay_shields()
 	return
 
-/datum/action/xeno_action/activable/rav_spikes/use_ability(atom/affected_atom)
+/datum/action/xeno_action/activable/rav_spikes/use_action(atom/affected_atom)
 	var/mob/living/carbon/xenomorph/xeno = owner
 
 	if (!action_cooldown_check())
@@ -526,7 +526,7 @@
 	else
 		return FALSE
 
-/datum/action/xeno_action/onclick/spike_shed/use_ability(atom/affected_atom)
+/datum/action/xeno_action/onclick/spike_shed/use_action(atom/affected_atom)
 	var/mob/living/carbon/xenomorph/xeno = owner
 
 	if (!action_cooldown_check())

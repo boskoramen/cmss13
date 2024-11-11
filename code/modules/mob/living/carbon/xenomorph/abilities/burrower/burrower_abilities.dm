@@ -8,7 +8,7 @@
 	action_type = XENO_ACTION_CLICK
 	ability_primacy = XENO_PRIMARY_ACTION_3
 
-/datum/action/xeno_action/activable/burrow/use_ability(atom/A)
+/datum/action/xeno_action/activable/burrow/use_action(atom/A)
 	var/mob/living/carbon/xenomorph/X = owner
 
 	if(SSticker?.mode?.hardcore)
@@ -28,7 +28,7 @@
 	action_type = XENO_ACTION_CLICK
 	ability_primacy = XENO_PRIMARY_ACTION_4
 
-/datum/action/xeno_action/onclick/tremor/use_ability()
+/datum/action/xeno_action/onclick/tremor/use_action()
 	var/mob/living/carbon/xenomorph/X = owner
 	X.tremor()
 	return ..()

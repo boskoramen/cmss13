@@ -95,7 +95,7 @@
 	T.ex_act(EXPLOSION_THRESHOLD_VLOW, , create_cause_data(caste_type, src))
 	..(T)
 
-/datum/action/xeno_action/onclick/crusher_stomp/use_ability(atom/A)
+/datum/action/xeno_action/onclick/crusher_stomp/use_action(atom/A)
 	var/mob/living/carbon/xenomorph/X = owner
 	if (!istype(X))
 		return
@@ -138,7 +138,7 @@
 	apply_cooldown()
 	return ..()
 
-/datum/action/xeno_action/onclick/crusher_stomp/charger/use_ability()
+/datum/action/xeno_action/onclick/crusher_stomp/charger/use_action()
 	var/mob/living/carbon/xenomorph/Xeno = owner
 	var/mob/living/carbon/Targeted
 	if (!istype(Xeno))
@@ -184,7 +184,7 @@
 	apply_cooldown()
 	return ..()
 
-/datum/action/xeno_action/onclick/crusher_shield/use_ability(atom/Target)
+/datum/action/xeno_action/onclick/crusher_shield/use_action(atom/Target)
 	var/mob/living/carbon/xenomorph/xeno = owner
 
 	if (!istype(xeno))
@@ -244,7 +244,7 @@
 
 	xeno.overlay_shields()
 
-/datum/action/xeno_action/onclick/charger_charge/use_ability(atom/Target)
+/datum/action/xeno_action/onclick/charger_charge/use_action(atom/Target)
 	var/mob/living/carbon/xenomorph/Xeno = owner
 
 	activated = !activated
@@ -275,7 +275,7 @@
 		button.icon_state = "template"
 	return ..()
 
-/datum/action/xeno_action/activable/tumble/use_ability(atom/Target)
+/datum/action/xeno_action/activable/tumble/use_action(atom/Target)
 	if(!action_cooldown_check())
 		return
 	var/mob/living/carbon/xenomorph/Xeno = owner

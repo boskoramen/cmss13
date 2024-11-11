@@ -135,7 +135,7 @@
 	qdel(target_xeno)
 	return
 
-/datum/action/xeno_action/onclick/remove_eggsac/use_ability(atom/A)
+/datum/action/xeno_action/onclick/remove_eggsac/use_action(atom/A)
 	var/mob/living/carbon/xenomorph/queen/X = owner
 	if(!X.check_state())
 		return
@@ -158,7 +158,7 @@
 	X.dismount_ovipositor()
 	return ..()
 
-/datum/action/xeno_action/onclick/grow_ovipositor/use_ability(atom/Atom)
+/datum/action/xeno_action/onclick/grow_ovipositor/use_action(atom/Atom)
 	var/mob/living/carbon/xenomorph/queen/xeno = owner
 	if(!xeno.check_state())
 		return
@@ -212,7 +212,7 @@
 	xeno.mount_ovipositor()
 	return ..()
 
-/datum/action/xeno_action/onclick/set_xeno_lead/use_ability(atom/A)
+/datum/action/xeno_action/onclick/set_xeno_lead/use_action(atom/A)
 	var/mob/living/carbon/xenomorph/queen/X = owner
 	if(!X.check_state())
 		return
@@ -255,7 +255,7 @@
 			to_chat(X, SPAN_XENOWARNING("There are no Xenomorph leaders. Overwatch a Xenomorph to make it a leader."))
 	return ..()
 
-/datum/action/xeno_action/activable/queen_heal/use_ability(atom/A, verbose)
+/datum/action/xeno_action/activable/queen_heal/use_action(atom/A, verbose)
 	var/mob/living/carbon/xenomorph/queen/X = owner
 	if(!X.check_state())
 		return
@@ -377,7 +377,7 @@
 	if(give_jelly_award(xeno.hive))
 		xeno.use_plasma(plasma_cost_jelly)
 		return
-/datum/action/xeno_action/onclick/manage_hive/use_ability(atom/Atom)
+/datum/action/xeno_action/onclick/manage_hive/use_action(atom/Atom)
 	var/mob/living/carbon/xenomorph/queen/queen_manager = owner
 	plasma_cost = 0
 	var/list/options = list("Banish (500)", "Re-Admit (100)", "De-evolve (500)", "Reward Jelly (500)", "Exchange larva for evolution (100)",)
@@ -638,7 +638,7 @@
 	action_icon_state = "queen_eye"
 	plasma_cost = 0
 
-/datum/action/xeno_action/onclick/eye/use_ability(atom/A)
+/datum/action/xeno_action/onclick/eye/use_action(atom/A)
 	. = ..()
 	if(!owner)
 		return
@@ -657,7 +657,7 @@
 	recently_built_turfs = null
 	return ..()
 
-/datum/action/xeno_action/activable/expand_weeds/use_ability(atom/A)
+/datum/action/xeno_action/activable/expand_weeds/use_action(atom/A)
 	var/mob/living/carbon/xenomorph/queen/X = owner
 	if(!X.check_state())
 		return
@@ -729,7 +729,7 @@
 /datum/action/xeno_action/activable/expand_weeds/proc/reset_turf_cooldown(turf/T)
 	recently_built_turfs -= T
 
-/datum/action/xeno_action/activable/place_queen_beacon/use_ability(atom/A)
+/datum/action/xeno_action/activable/place_queen_beacon/use_action(atom/A)
 	var/mob/living/carbon/xenomorph/queen/Q = owner
 	if(!Q.check_state())
 		return FALSE
@@ -796,7 +796,7 @@
 	return TRUE
 
 
-/datum/action/xeno_action/activable/blockade/use_ability(atom/A)
+/datum/action/xeno_action/activable/blockade/use_action(atom/A)
 	var/mob/living/carbon/xenomorph/queen/Q = owner
 	if(!Q.check_state())
 		return FALSE

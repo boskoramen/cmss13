@@ -1,4 +1,4 @@
-/datum/action/xeno_action/onclick/charge_spit/use_ability(atom/A)
+/datum/action/xeno_action/onclick/charge_spit/use_action(atom/A)
 	var/mob/living/carbon/xenomorph/zenomorf = owner
 
 	if (!action_cooldown_check())
@@ -56,7 +56,7 @@
 	disable_spatter()
 	buffs_active = FALSE
 
-/datum/action/xeno_action/activable/tail_stab/spitter/use_ability(atom/A)
+/datum/action/xeno_action/activable/tail_stab/spitter/use_action(atom/A)
 	var/target = ..()
 	if(iscarbon(target))
 		var/mob/living/carbon/carbon_target = target

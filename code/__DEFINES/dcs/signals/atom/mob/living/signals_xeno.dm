@@ -10,7 +10,7 @@
 #define COMSIG_XENO_PRE_HEAL "xeno_pre_heal"
 	#define COMPONENT_CANCEL_XENO_HEAL (1<<0)
 
-/// From ../xeno_action/activable/xeno_spit/use_ability
+/// From ../xeno_action/activable/xeno_spit/use_action
 #define COMSIG_XENO_POST_SPIT "xeno_spit"
 
 /// From /mob/living/carbon/xenomorph/revive()
@@ -48,11 +48,11 @@
 #define COMSIG_XENO_THICK_RESIN_BYPASS "xeno_thick_resin_bypass"
 	#define COMPONENT_THICK_BYPASS (1<<0)
 
-/// From /datum/action/xeno_action/proc/use_ability_wrapper(): (mob/owner)
+/// From /datum/action/xeno_action/proc/use_action_wrapper(): (mob/owner)
 #define COMSIG_XENO_ACTION_USED "xeno_action_used"
-/// From /datum/action/xeno_action/proc/use_ability_wrapper(): (mob/owner)
+/// From /datum/action/xeno_action/proc/use_action_wrapper(): (mob/owner)
 #define COMSIG_XENO_PRE_ACTION_USED "xeno_pre_action_used"
-/// From /datum/action/xeno_action/proc/use_ability_wrapper(): (mob/owner)
+/// From /datum/action/xeno_action/proc/use_action_wrapper(): (mob/owner)
 #define COMSIG_XENO_FAILED_ACTION_USED "xeno_failed_action_used"
 /// From /mob/living/carbon/xenomorph/proc/check_blood_splash()
 #define COMSIG_XENO_DEAL_ACID_DAMAGE "xeno_deal_acid_damage"
@@ -67,7 +67,7 @@
 /// For any additional things that should happen when a xeno's melee_attack_additional_effects_self() proc is called
 #define COMSIG_XENO_SLASH_ADDITIONAL_EFFECTS_SELF "xeno_slash_additional_effects_self"
 
-/// From /datum/action/xeno_action/onclick/plant_weeds/use_ability(): (atom/A)
+/// From /datum/action/xeno_action/onclick/plant_weeds/use_action(): (atom/A)
 #define COMSIG_XENO_PLANT_RESIN_NODE "xeno_plant_resin_node"
 
 /// From //mob/living/carbon/xenomorph/proc/emit_pheromones(): (pheromone, emit_cost)

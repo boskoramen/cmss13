@@ -163,7 +163,7 @@
 	name = "Psychic Radiance"
 	action_icon_state = "cultist_channel_hivemind"
 
-/datum/action/xeno_action/onclick/psychic_radiance/use_ability(atom/A)
+/datum/action/xeno_action/onclick/psychic_radiance/use_action(atom/A)
 	. = ..()
 	if(!ishuman(owner))
 		return FALSE
@@ -213,7 +213,7 @@ CULT
 	if(H.selected_ability == src)
 		H.set_selected_ability(null)
 
-/datum/action/human_action/activable/proc/use_ability(mob/M)
+/datum/action/human_action/activable/proc/use_action(mob/M)
 	return
 
 /datum/action/human_action/activable/update_button_icon()
@@ -264,7 +264,7 @@ CULT
 	return TRUE
 
 
-/datum/action/human_action/activable/droppod/use_ability(atom/A)
+/datum/action/human_action/activable/droppod/use_action(atom/A)
 	. = ..()
 	if(!can_use_action())
 		return
@@ -452,7 +452,7 @@ CULT
 	name = "Convert"
 	action_icon_state = "cultist_channel_convert"
 
-/datum/action/human_action/activable/cult_leader/convert/use_ability(mob/M)
+/datum/action/human_action/activable/cult_leader/convert/use_action(mob/M)
 	var/datum/hive_status/hive = get_hive()
 
 	if(!istype(hive))
@@ -498,7 +498,7 @@ CULT
 
 	cooldown = 1 MINUTES
 
-/datum/action/human_action/activable/cult_leader/stun/use_ability(mob/M)
+/datum/action/human_action/activable/cult_leader/stun/use_action(mob/M)
 	if(!action_cooldown_check())
 		return
 
@@ -550,7 +550,7 @@ CULT
 
 	var/list/converted = list()
 
-/datum/action/human_action/activable/mutineer/mutineer_convert/use_ability(mob/M)
+/datum/action/human_action/activable/mutineer/mutineer_convert/use_action(mob/M)
 	if(!can_use_action())
 		return
 

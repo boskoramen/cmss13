@@ -1,4 +1,4 @@
-/datum/action/xeno_action/activable/acid_lance/use_ability(atom/affected_atom)
+/datum/action/xeno_action/activable/acid_lance/use_action(atom/affected_atom)
 	var/mob/living/carbon/xenomorph/xeno = owner
 
 	if (!istype(xeno) || !xeno.check_state())
@@ -103,7 +103,7 @@
 /datum/action/xeno_action/activable/acid_lance/action_cooldown_check()
 	return (activated_once || ..())
 
-/datum/action/xeno_action/activable/xeno_spit/bombard/use_ability(atom/affected_atom)
+/datum/action/xeno_action/activable/xeno_spit/bombard/use_action(atom/affected_atom)
 	. = ..()
 	var/mob/living/carbon/xenomorph/xeno = owner
 	if(!action_cooldown_check()) // activate c/d only if we already spit
@@ -114,7 +114,7 @@
 
 			xeno_action.apply_cooldown_override(cooldown_duration)
 
-/datum/action/xeno_action/onclick/acid_shroud/use_ability(atom/affected_atom)
+/datum/action/xeno_action/onclick/acid_shroud/use_action(atom/affected_atom)
 	var/datum/effect_system/smoke_spread/xeno_acid/spicy_gas
 	var/mob/living/carbon/xenomorph/xeno = owner
 	if (!isxeno(owner))
@@ -158,13 +158,13 @@
 	apply_cooldown()
 	return ..()
 
-/datum/action/xeno_action/onclick/shift_spits/boiler/use_ability(atom/affected_atom)
+/datum/action/xeno_action/onclick/shift_spits/boiler/use_action(atom/affected_atom)
 	. = ..()
 	apply_cooldown()
 
 /////////////////////////////// Trapper boiler powers
 
-/datum/action/xeno_action/activable/boiler_trap/use_ability(atom/affected_atom)
+/datum/action/xeno_action/activable/boiler_trap/use_action(atom/affected_atom)
 	var/mob/living/carbon/xenomorph/xeno = owner
 
 	if (!istype(xeno))
@@ -227,7 +227,7 @@
 	apply_cooldown()
 	return ..()
 
-/datum/action/xeno_action/activable/acid_mine/use_ability(atom/affected_atom)
+/datum/action/xeno_action/activable/acid_mine/use_action(atom/affected_atom)
 	var/mob/living/carbon/xenomorph/xeno = owner
 
 	if (!istype(xeno))
@@ -267,7 +267,7 @@
 	apply_cooldown()
 	return ..()
 
-/datum/action/xeno_action/activable/acid_shotgun/use_ability(atom/affected_atom)
+/datum/action/xeno_action/activable/acid_shotgun/use_action(atom/affected_atom)
 	var/mob/living/carbon/xenomorph/xeno = owner
 	if (!istype(xeno))
 		return
@@ -318,7 +318,7 @@
 	bonus_projectiles_amount = 0
 	max_range = 4
 
-/datum/action/xeno_action/activable/tail_stab/boiler/use_ability(atom/affected_atom)
+/datum/action/xeno_action/activable/tail_stab/boiler/use_action(atom/affected_atom)
 	var/mob/living/carbon/xenomorph/stabbing_xeno = owner
 	var/target = ..()
 	if(iscarbon(target))

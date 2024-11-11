@@ -1,4 +1,4 @@
-/datum/action/xeno_action/activable/runner_skillshot/use_ability(atom/affected_atom)
+/datum/action/xeno_action/activable/runner_skillshot/use_action(atom/affected_atom)
 	var/mob/living/carbon/xenomorph/xeno = owner
 	if (!istype(xeno))
 		return
@@ -27,7 +27,7 @@
 	return ..()
 
 
-/datum/action/xeno_action/activable/acider_acid/use_ability(atom/affected_atom)
+/datum/action/xeno_action/activable/acider_acid/use_action(atom/affected_atom)
 	var/mob/living/carbon/xenomorph/xeno = owner
 	if(!istype(affected_atom, /obj/item) && !istype(affected_atom, /obj/structure/) && !istype(affected_atom, /obj/vehicle/multitile))
 		to_chat(xeno, SPAN_XENOHIGHDANGER("Can only melt barricades and items!"))
@@ -138,7 +138,7 @@
 	playsound(loc, "sound/bullets/acid_impact1.ogg", 25)
 
 
-/datum/action/xeno_action/activable/acider_for_the_hive/use_ability(atom/affected_atom)
+/datum/action/xeno_action/activable/acider_for_the_hive/use_action(atom/affected_atom)
 	var/mob/living/carbon/xenomorph/xeno = owner
 
 	if(!istype(xeno))

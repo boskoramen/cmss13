@@ -1,4 +1,4 @@
-/datum/action/xeno_action/onclick/toggle_crest/use_ability(atom/target)
+/datum/action/xeno_action/onclick/toggle_crest/use_action(atom/target)
 	var/mob/living/carbon/xenomorph/xeno = owner
 	if (!istype(xeno))
 		return
@@ -36,7 +36,7 @@
 	return ..()
 
 // Defender Headbutt
-/datum/action/xeno_action/activable/headbutt/use_ability(atom/target_atom)
+/datum/action/xeno_action/activable/headbutt/use_action(atom/target_atom)
 	var/mob/living/carbon/xenomorph/fendy = owner
 	if(!istype(fendy))
 		return
@@ -97,7 +97,7 @@
 	return ..()
 
 // Defender Tail Sweep
-/datum/action/xeno_action/onclick/tail_sweep/use_ability(atom/A)
+/datum/action/xeno_action/onclick/tail_sweep/use_action(atom/A)
 	var/mob/living/carbon/xenomorph/xeno = owner
 	if (!istype(xeno))
 		return
@@ -149,7 +149,7 @@
 	return ..()
 
 // Defender Fortify
-/datum/action/xeno_action/activable/fortify/use_ability(atom/target)
+/datum/action/xeno_action/activable/fortify/use_action(atom/target)
 	var/mob/living/carbon/xenomorph/xeno = owner
 	if (!istype(xeno))
 		return
@@ -259,7 +259,7 @@
 	UnregisterSignal(owner, COMSIG_MOB_DEATH)
 	fortify_switch(owner, FALSE)
 
-/datum/action/xeno_action/onclick/soak/use_ability(atom/A)
+/datum/action/xeno_action/onclick/soak/use_action(atom/A)
 	var/mob/living/carbon/xenomorph/steelcrest = owner
 
 	if (!action_cooldown_check())

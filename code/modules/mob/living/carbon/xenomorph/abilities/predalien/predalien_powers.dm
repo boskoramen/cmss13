@@ -1,4 +1,4 @@
-/datum/action/xeno_action/onclick/predalien_roar/use_ability(atom/target)
+/datum/action/xeno_action/onclick/predalien_roar/use_action(atom/target)
 	var/mob/living/carbon/xenomorph/xeno = owner
 
 	if(!action_cooldown_check())
@@ -34,7 +34,7 @@
 	apply_cooldown()
 	return ..()
 
-/datum/action/xeno_action/activable/feralfrenzy/use_ability(atom/target)
+/datum/action/xeno_action/activable/feralfrenzy/use_action(atom/target)
 	var/mob/living/carbon/xenomorph/xeno = owner
 	if(!action_cooldown_check() || xeno.action_busy)
 		return
@@ -121,7 +121,7 @@
 	return ..()
 
 
-/datum/action/xeno_action/onclick/feralrush/use_ability(atom/A)
+/datum/action/xeno_action/onclick/feralrush/use_action(atom/A)
 	var/mob/living/carbon/xenomorph/predatoralien = owner
 
 	if(!action_cooldown_check())
@@ -174,7 +174,7 @@
 		armor_buff = FALSE
 
 
-/datum/action/xeno_action/onclick/toggle_gut_targeting/use_ability(atom/A)
+/datum/action/xeno_action/onclick/toggle_gut_targeting/use_action(atom/A)
 
 	var/mob/living/carbon/xenomorph/xeno = owner
 	var/action_icon_result
@@ -199,7 +199,7 @@
 	button.overlays += image('icons/mob/hud/actions_xeno.dmi', button, action_icon_result)
 	return ..()
 
-/datum/action/xeno_action/activable/feral_smash/use_ability(atom/affected_atom)
+/datum/action/xeno_action/activable/feral_smash/use_action(atom/affected_atom)
 	var/mob/living/carbon/xenomorph/predalien_smash = owner
 	var/datum/behavior_delegate/predalien_base/predalienbehavior = predalien_smash.behavior_delegate
 

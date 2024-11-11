@@ -76,7 +76,7 @@
 	if(X && !X.buckled && !X.is_mob_incapacitated())
 		return TRUE
 
-/datum/action/xeno_action/onclick/toggle_cleave/use_ability(atom/A)
+/datum/action/xeno_action/onclick/toggle_cleave/use_action(atom/A)
 	var/mob/living/carbon/xenomorph/X = owner
 
 	if (!istype(X))
@@ -308,7 +308,7 @@
 	if(X && !X.buckled && !X.is_mob_incapacitated())
 		return TRUE
 
-/datum/action/xeno_action/onclick/prae_switch_heal_type/use_ability(atom/A)
+/datum/action/xeno_action/onclick/prae_switch_heal_type/use_action(atom/A)
 
 	var/mob/living/carbon/xenomorph/X = owner
 	var/action_icon_result

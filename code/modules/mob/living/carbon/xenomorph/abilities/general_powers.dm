@@ -3,7 +3,7 @@
 // and abilities files hold the object declarations for the abilities
 
 // Plant weeds
-/datum/action/xeno_action/onclick/plant_weeds/use_ability(atom/A)
+/datum/action/xeno_action/onclick/plant_weeds/use_action(atom/A)
 	var/mob/living/carbon/xenomorph/xeno = owner
 	if(!action_cooldown_check())
 		return
@@ -100,14 +100,14 @@
 
 	return ..()
 
-/datum/action/xeno_action/onclick/xeno_resting/use_ability(atom/target)
+/datum/action/xeno_action/onclick/xeno_resting/use_action(atom/target)
 	var/mob/living/carbon/xenomorph/xeno = owner
 	xeno.lay_down()
 	button.icon_state = xeno.resting ? "template_active" : "template"
 	return ..()
 
 // Shift spits
-/datum/action/xeno_action/onclick/shift_spits/use_ability(atom/A)
+/datum/action/xeno_action/onclick/shift_spits/use_action(atom/A)
 	var/mob/living/carbon/xenomorph/X = owner
 	if(!X.check_state())
 		return
@@ -123,7 +123,7 @@
 	button.overlays += image('icons/mob/hud/actions_xeno.dmi', button, "shift_spit_[X.ammo.icon_state]")
 	return ..()
 
-/datum/action/xeno_action/onclick/regurgitate/use_ability(atom/A)
+/datum/action/xeno_action/onclick/regurgitate/use_action(atom/A)
 	var/mob/living/carbon/xenomorph/X = owner
 	if(!X.check_state())
 		return
@@ -139,7 +139,7 @@
 
 	return ..()
 
-/datum/action/xeno_action/onclick/choose_resin/use_ability(atom/A)
+/datum/action/xeno_action/onclick/choose_resin/use_action(atom/A)
 	var/mob/living/carbon/xenomorph/X = owner
 	if(!X.check_state())
 		return
@@ -229,7 +229,7 @@
 	button.overlays += image('icons/mob/hud/actions_xeno.dmi', button, resin_construction.construction_name)
 
 // Resin
-/datum/action/xeno_action/activable/secrete_resin/use_ability(atom/A)
+/datum/action/xeno_action/activable/secrete_resin/use_action(atom/A)
 	if(!..())
 		return FALSE
 	var/mob/living/carbon/xenomorph/X = owner
@@ -251,7 +251,7 @@
 
 // leader Marker
 
-/datum/action/xeno_action/activable/info_marker/use_ability(atom/A, mods)
+/datum/action/xeno_action/activable/info_marker/use_action(atom/A, mods)
 	if(!..())
 		return FALSE
 
@@ -309,14 +309,14 @@
 
 
 // Destructive Acid
-/datum/action/xeno_action/activable/corrosive_acid/use_ability(atom/target)
+/datum/action/xeno_action/activable/corrosive_acid/use_action(atom/target)
 	var/mob/living/carbon/xenomorph/xeno = owner
 	xeno.corrosive_acid(target, acid_type, acid_plasma_cost)
 	for(var/obj/item/explosive/plastic/explosive in target.contents)
 		xeno.corrosive_acid(explosive,acid_type,acid_plasma_cost)
 	return ..()
 
-/datum/action/xeno_action/onclick/emit_pheromones/use_ability(atom/target)
+/datum/action/xeno_action/onclick/emit_pheromones/use_action(atom/target)
 	var/mob/living/carbon/xenomorph/xeno = owner
 	if(!istype(xeno))
 		return
@@ -371,7 +371,7 @@
 		for(var/mob/living/carbon/xenomorph/L in hive.xeno_leader_list)
 			L.handle_xeno_leader_pheromones()
 
-/datum/action/xeno_action/activable/pounce/use_ability(atom/A)
+/datum/action/xeno_action/activable/pounce/use_action(atom/A)
 	var/mob/living/carbon/xenomorph/X = owner
 
 	if(!action_cooldown_check())
@@ -444,7 +444,7 @@
 	return TRUE
 
 // Massive, customizable spray_acid
-/datum/action/xeno_action/activable/spray_acid/use_ability(atom/A)
+/datum/action/xeno_action/activable/spray_acid/use_action(atom/A)
 	var/mob/living/carbon/xenomorph/X = owner
 
 	if(!action_cooldown_check())
@@ -490,7 +490,7 @@
 
 	return ..()
 
-/datum/action/xeno_action/onclick/xenohide/use_ability(atom/target)
+/datum/action/xeno_action/onclick/xenohide/use_action(atom/target)
 	var/mob/living/carbon/xenomorph/xeno = owner
 	if(!xeno.check_state(TRUE))
 		return
@@ -517,7 +517,7 @@
 	if(!QDELETED(source) && (new_stat >= UNCONSCIOUS && old_stat <= UNCONSCIOUS))
 		post_attack()
 
-/datum/action/xeno_action/onclick/place_trap/use_ability(atom/A)
+/datum/action/xeno_action/onclick/place_trap/use_action(atom/A)
 	var/mob/living/carbon/xenomorph/X = owner
 	if(!X.check_state())
 		return
@@ -592,7 +592,7 @@
 
 	return alien_weeds
 
-/datum/action/xeno_action/activable/place_construction/use_ability(atom/A)
+/datum/action/xeno_action/activable/place_construction/use_action(atom/A)
 	var/mob/living/carbon/xenomorph/X = owner
 	if(!X.check_state())
 		return FALSE
@@ -742,7 +742,7 @@
 			return FALSE
 	return TRUE
 
-/datum/action/xeno_action/activable/xeno_spit/use_ability(atom/atom)
+/datum/action/xeno_action/activable/xeno_spit/use_action(atom/atom)
 	var/mob/living/carbon/xenomorph/xeno = owner
 	var/spit_target = aim_turf ? get_turf(atom) : atom
 	if(!xeno.check_state())
@@ -804,7 +804,7 @@
 	apply_cooldown()
 	return ..()
 
-/datum/action/xeno_action/activable/bombard/use_ability(atom/A)
+/datum/action/xeno_action/activable/bombard/use_action(atom/A)
 	var/mob/living/carbon/xenomorph/X = owner
 
 	if (!istype(X) || !X.check_state() || !action_cooldown_check() || X.action_busy)
@@ -918,7 +918,7 @@
 
 		current = get_step_towards(current, target_turf)
 
-/datum/action/xeno_action/activable/tail_stab/use_ability(atom/targetted_atom)
+/datum/action/xeno_action/activable/tail_stab/use_action(atom/targetted_atom)
 	var/mob/living/carbon/xenomorph/stabbing_xeno = owner
 
 	if(HAS_TRAIT(stabbing_xeno, TRAIT_ABILITY_BURROWED) || stabbing_xeno.is_ventcrawling)

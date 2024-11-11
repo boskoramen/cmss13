@@ -298,7 +298,7 @@
 	if(xeno.is_zoomed)
 		button.icon_state = "template_active"
 
-/datum/action/xeno_action/onclick/toggle_long_range/use_ability(atom/target)
+/datum/action/xeno_action/onclick/toggle_long_range/use_action(atom/target)
 	var/mob/living/carbon/xenomorph/xeno = owner
 
 	if(!HAS_TRAIT(xeno, TRAIT_ABILITY_SIGHT_IGNORE_REST) && !xeno.check_state())
@@ -381,7 +381,7 @@
 	action_type = XENO_ACTION_CLICK
 	ability_primacy = XENO_PRIMARY_ACTION_4
 
-/datum/action/xeno_action/activable/transfer_plasma/use_ability(atom/target)
+/datum/action/xeno_action/activable/transfer_plasma/use_action(atom/target)
 	var/mob/living/carbon/xenomorph/xeno = owner
 	xeno.xeno_transfer_plasma(target, plasma_transfer_amount, transfer_delay, max_range)
 	return ..()
@@ -563,7 +563,7 @@
 		return FALSE
 	return TRUE
 
-/datum/action/xeno_action/onclick/tacmap/use_ability(atom/target)
+/datum/action/xeno_action/onclick/tacmap/use_action(atom/target)
 	var/mob/living/carbon/xenomorph/xeno = owner
 	xeno.xeno_tacmap()
 	return ..()

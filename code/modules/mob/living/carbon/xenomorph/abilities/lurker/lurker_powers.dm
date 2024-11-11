@@ -31,7 +31,7 @@
 	var/mob/living/carbon/xenomorph/xeno = owner
 	return xeno.deselect_timer < world.time // We clicked the same ability in a very short time
 
-/datum/action/xeno_action/onclick/lurker_invisibility/use_ability(atom/targeted_atom)
+/datum/action/xeno_action/onclick/lurker_invisibility/use_action(atom/targeted_atom)
 	var/mob/living/carbon/xenomorph/xeno = owner
 
 	if(!istype(xeno))
@@ -104,7 +104,7 @@
 	to_chat(owner, SPAN_XENOHIGHDANGER("We are ready to use our invisibility again!"))
 	..()
 
-/datum/action/xeno_action/onclick/lurker_assassinate/use_ability(atom/targeted_atom)
+/datum/action/xeno_action/onclick/lurker_assassinate/use_action(atom/targeted_atom)
 	var/mob/living/carbon/xenomorph/xeno = owner
 
 	if (!istype(xeno))
@@ -155,7 +155,7 @@
 	playsound(get_turf(target), 'sound/weapons/alien_claw_flesh3.ogg', 30, TRUE)
 	shake_camera(target, 2, 1)
 
-/datum/action/xeno_action/activable/flurry/use_ability(atom/targeted_atom) //flurry ability
+/datum/action/xeno_action/activable/flurry/use_action(atom/targeted_atom) //flurry ability
 	var/mob/living/carbon/xenomorph/xeno = owner
 
 	if (!istype(xeno))
@@ -221,7 +221,7 @@
 	xeno.emote("roar")
 	return ..()
 
-/datum/action/xeno_action/activable/tail_jab/use_ability(atom/targeted_atom)
+/datum/action/xeno_action/activable/tail_jab/use_action(atom/targeted_atom)
 
 	var/mob/living/carbon/xenomorph/xeno = owner
 	var/mob/living/carbon/hit_target = targeted_atom
@@ -318,7 +318,7 @@
 	if(new_dir == xeno.dir)
 		xeno.setDir(last_dir)
 
-/datum/action/xeno_action/activable/headbite/use_ability(atom/target_atom)
+/datum/action/xeno_action/activable/headbite/use_action(atom/target_atom)
 	var/mob/living/carbon/xenomorph/xeno = owner
 
 	if(!iscarbon(target_atom))

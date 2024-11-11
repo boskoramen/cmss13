@@ -57,7 +57,7 @@
 	var/last_use = 0
 	var/care_about_adjacency = TRUE
 
-/datum/action/xeno_action/activable/secrete_resin/remote/use_ability(atom/target_atom, mods)
+/datum/action/xeno_action/activable/secrete_resin/remote/use_action(atom/target_atom, mods)
 	if(!can_remote_build())
 		to_chat(owner, SPAN_XENONOTICE("We must be standing on weeds to establish a connection to the resin."))
 		return

@@ -1,4 +1,4 @@
-/datum/action/xeno_action/activable/pierce/use_ability(atom/targetted_atom)
+/datum/action/xeno_action/activable/pierce/use_action(atom/targetted_atom)
 	var/mob/living/carbon/xenomorph/pierce_user = owner
 	if (!action_cooldown_check())
 		return
@@ -77,7 +77,7 @@
 	apply_cooldown()
 	return ..()
 
-/datum/action/xeno_action/activable/pounce/prae_dash/use_ability(atom/A)
+/datum/action/xeno_action/activable/pounce/prae_dash/use_action(atom/A)
 	if(!activated_once && !action_cooldown_check() || owner.throwing)
 		return
 
@@ -138,7 +138,7 @@
 		if (istype(behavior))
 			behavior.regen_shield()
 
-/datum/action/xeno_action/activable/cleave/use_ability(atom/target_atom)
+/datum/action/xeno_action/activable/cleave/use_action(atom/target_atom)
 	var/mob/living/carbon/xenomorph/cleave_user = owner
 	if (!action_cooldown_check())
 		return
@@ -200,7 +200,7 @@
 
 ///////// OPPRESSOR POWERS
 
-/datum/action/xeno_action/activable/tail_stab/tail_seize/use_ability(atom/targetted_atom)
+/datum/action/xeno_action/activable/tail_stab/tail_seize/use_action(atom/targetted_atom)
 	var/mob/living/carbon/xenomorph/stabbing_xeno = owner
 
 	if(!action_cooldown_check())
@@ -231,7 +231,7 @@
 	xeno_attack_delay(stabbing_xeno)
 	return ..()
 
-/datum/action/xeno_action/activable/prae_abduct/use_ability(atom/atom)
+/datum/action/xeno_action/activable/prae_abduct/use_action(atom/atom)
 	var/mob/living/carbon/xenomorph/abduct_user = owner
 
 	if(!atom || atom.layer >= FLY_LAYER || !isturf(abduct_user.loc))
@@ -364,7 +364,7 @@
 /datum/action/xeno_action/activable/prae_abduct/proc/remove_tail_overlay(mob/living/carbon/human/overlayed_human, image/tail_image)
 	overlayed_human.overlays -= tail_image
 
-/datum/action/xeno_action/activable/oppressor_punch/use_ability(atom/target_atom)
+/datum/action/xeno_action/activable/oppressor_punch/use_action(atom/target_atom)
 	var/mob/living/carbon/xenomorph/oppressor_user = owner
 
 	if (!action_cooldown_check())
@@ -428,7 +428,7 @@
 	apply_cooldown()
 	return ..()
 
-/datum/action/xeno_action/activable/tail_lash/use_ability(atom/A)
+/datum/action/xeno_action/activable/tail_lash/use_action(atom/A)
 	var/mob/living/carbon/xenomorph/lash_user = owner
 
 	if (!istype(lash_user) || !lash_user.check_state() || !action_cooldown_check())
@@ -517,7 +517,7 @@
 
 
 /////////// Dancer powers
-/datum/action/xeno_action/activable/prae_impale/use_ability(atom/target_atom)
+/datum/action/xeno_action/activable/prae_impale/use_action(atom/target_atom)
 	var/mob/living/carbon/xenomorph/dancer_user = owner
 
 	if (!action_cooldown_check())
@@ -583,7 +583,7 @@
 	playsound(target_carbon, 'sound/weapons/alien_tail_attack.ogg', 30, TRUE)
 	return ..()
 
-/datum/action/xeno_action/onclick/prae_dodge/use_ability(atom/target)
+/datum/action/xeno_action/onclick/prae_dodge/use_action(atom/target)
 	var/mob/living/carbon/xenomorph/dodge_user = owner
 
 	if (!action_cooldown_check())
@@ -629,7 +629,7 @@
 		dodge_remove.recalculate_speed()
 		to_chat(dodge_remove, SPAN_XENOHIGHDANGER("We can no longer dodge through mobs!"))
 
-/datum/action/xeno_action/activable/prae_tail_trip/use_ability(atom/target_atom)
+/datum/action/xeno_action/activable/prae_tail_trip/use_action(atom/target_atom)
 	var/mob/living/carbon/xenomorph/dancer_user = owner
 
 	if (!action_cooldown_check())
@@ -721,7 +721,7 @@
 	apply_cooldown()
 	return ..()
 
-/datum/action/xeno_action/activable/prae_acid_ball/use_ability(atom/A)
+/datum/action/xeno_action/activable/prae_acid_ball/use_action(atom/A)
 	var/mob/living/carbon/xenomorph/acidball_user = owner
 	if (!acidball_user.check_state() || acidball_user.action_busy)
 		return
@@ -753,7 +753,7 @@
 
 	return ..()
 
-/datum/action/xeno_action/activable/warden_heal/use_ability(atom/A)
+/datum/action/xeno_action/activable/warden_heal/use_action(atom/A)
 	var/mob/living/carbon/xenomorph/wardenbuff_user = owner
 	if (!istype(wardenbuff_user))
 		return
@@ -887,7 +887,7 @@
 	apply_cooldown()
 	return ..()
 
-/datum/action/xeno_action/activable/prae_retrieve/use_ability(atom/A)
+/datum/action/xeno_action/activable/prae_retrieve/use_action(atom/A)
 	var/mob/living/carbon/xenomorph/warden = owner
 	if(!istype(warden))
 		return

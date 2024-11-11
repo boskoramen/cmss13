@@ -59,7 +59,7 @@
 	var/action_name = "Plant Resin Fruit"
 	handle_xeno_macro(src, action_name)
 
-/datum/action/xeno_action/onclick/plant_resin_fruit/use_ability(atom/target_atom)
+/datum/action/xeno_action/onclick/plant_resin_fruit/use_action(atom/target_atom)
 	var/mob/living/carbon/xenomorph/xeno = owner
 	if(!istype(xeno))
 		return
@@ -135,7 +135,7 @@
 	button.overlays += image(icon_file, button, action_icon_state)
 	button.overlays += image('icons/mob/xenos/fruits.dmi', button, initial(xeno.selected_fruit.mature_icon_state))
 
-/datum/action/xeno_action/onclick/change_fruit/use_ability(atom/target_atom)
+/datum/action/xeno_action/onclick/change_fruit/use_action(atom/target_atom)
 	var/mob/living/carbon/xenomorph/xeno = owner
 	if(!xeno.check_state())
 		return
@@ -230,7 +230,7 @@
 	var/channel_in_progress = FALSE
 	var/max_range = 7
 
-/datum/action/xeno_action/activable/resin_surge/use_ability(atom/target_atom, mods)
+/datum/action/xeno_action/activable/resin_surge/use_action(atom/target_atom, mods)
 	var/mob/living/carbon/xenomorph/xeno = owner
 	if (!istype(xeno))
 		return
