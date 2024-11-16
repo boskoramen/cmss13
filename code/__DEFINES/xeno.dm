@@ -46,23 +46,23 @@
 #define XENO_ACTION_QUEUE 2 // Tell the action handler to queue the action for next click
 #define XENO_ACTION_TOGGLE 3 // Action does something actively when toggled
 
-#define XENO_NOT_PRIMARY_ACTION -1    // NO primacy (never selected by default ability macros)
+#define XENO_NOT_PRIMARY_ACTION -1    // NO primacy (never selected by default action macros)
 #define XENO_PRIMARY_ACTION_1 0   // Is this action a "primary" action?
 #define XENO_PRIMARY_ACTION_2 1   // Second primary action
 #define XENO_PRIMARY_ACTION_3 2   // Tertiary primary action
 #define XENO_PRIMARY_ACTION_4 3   // 4th primary action (rarely used)
-#define XENO_PRIMARY_ACTION_5 4   // ability creep is real
+#define XENO_PRIMARY_ACTION_5 4   // action creep is real
 
 #define XENO_TECH_SECRETE_RESIN 5 //Macro for T1 build distrib secreting macro
-#define XENO_CORROSIVE_ACID 6 //Macro for covering things in acid, universal ability
+#define XENO_CORROSIVE_ACID 6 //Macro for covering things in acid, universal action
 #define XENO_SCREECH 7 //Macro for queen screech
 #define XENO_TAIL_STAB 8 //macro for tail stabs
 
-#define NO_ACTION_CHARGES -1 // This ability does not have a limit to how many times it can be used
+#define NO_ACTION_CHARGES -1 // This action does not have a limit to how many times it can be used
 
 #define ACID_SPRAY_LINE 0
 #define ACID_SPRAY_CONE 1
-/// Defines for Abomination ability /datum/action/xeno_action/activable/feralfrenzy
+/// Defines for Abomination action /datum/action/xeno_action/activable/feralfrenzy
 #define SINGLETARGETGUT 0
 #define AOETARGETGUT 1
 

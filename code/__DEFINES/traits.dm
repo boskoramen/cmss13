@@ -244,15 +244,15 @@
 /// If the mob won't drop items held in face slot when downed
 #define TRAIT_IRON_TEETH "t_iron_teeth"
 
-// -- ability traits --
+// -- action traits --
 /// Xenos with this trait cannot have plasma transfered to them
-#define TRAIT_ABILITY_NO_PLASMA_TRANSFER "t_ability_no_plasma_transfer"
+#define TRAIT_ABILITY_NO_PLASMA_TRANSFER "t_action_no_plasma_transfer"
 /// Shows that the xeno queen is on ovi
-#define TRAIT_ABILITY_OVIPOSITOR "t_ability_ovipositor"
+#define TRAIT_ABILITY_OVIPOSITOR "t_action_ovipositor"
 /// Used for burrowed mobs, prevent's SG/sentrys/claymores from autofiring
-#define TRAIT_ABILITY_BURROWED "t_ability_burrowed"
+#define TRAIT_ABILITY_BURROWED "t_action_burrowed"
 /// Xenos with this trait can toggle long sight while resting.
-#define TRAIT_ABILITY_SIGHT_IGNORE_REST "t_ability_sight_ignore_rest"
+#define TRAIT_ABILITY_SIGHT_IGNORE_REST "t_action_sight_ignore_rest"
 
 //-- item traits --
 // TOOL TRAITS
@@ -446,8 +446,8 @@ GLOBAL_LIST(trait_name_map)
 #define TRAIT_SOURCE_SKILL(skill) "t_s_skill_[skill]"
 ///Status trait coming from attachment
 #define TRAIT_SOURCE_ATTACHMENT(slot) "t_s_attachment_[slot]"
-///Status trait coming from ability
-#define TRAIT_SOURCE_ABILITY(ability) "t_s_ability_[ability]"
+///Status trait coming from action
+#define TRAIT_SOURCE_ABILITY(ability) "t_s_action_[ability]"
 #define TRAIT_SOURCE_LIMB(limb) "t_s_limb_[limb]"
 ///Status trait coming from temporary_mute
 #define TRAIT_SOURCE_TEMPORARY_MUTE "t_s_temporary_mute"

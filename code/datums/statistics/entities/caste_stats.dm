@@ -7,18 +7,18 @@
 	. = ..()
 	QDEL_LIST_ASSOC_VAL(abilities_used)
 
-/datum/entity/player_stats/caste/proc/setup_ability(ability)
+/datum/entity/player_stats/caste/proc/setup_action(ability)
 	if(!ability)
 		return
 	var/ability_key = strip_improper(ability)
 	if(abilities_used["[ability_key]"])
 		return abilities_used["[ability_key]"]
 	var/datum/entity/statistic/S = new()
-	S.name = ability_key
+	S.name = action_key
 	S.value = 0
 	abilities_used["[ability_key]"] = S
 	return S
 
 /datum/entity/player_stats/caste/proc/track_personal_abilities_used(ability, amount = 1)
-	var/datum/entity/statistic/S = setup_ability(ability)
+	var/datum/entity/statistic/S = setup_action(ability)
 	S.value += amount
