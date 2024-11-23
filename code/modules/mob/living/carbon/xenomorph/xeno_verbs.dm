@@ -119,7 +119,7 @@
 		to_chat(src, SPAN_NOTICE("You will now automatically shove people in the way as the Queen."))
 
 
-/mob/living/carbon/xenomorph/verb/ability_deactivation_toggle()
+/mob/living/carbon/xenomorph/verb/action_deactivation_toggle()
 	set name = "Toggle Action Deactivation"
 	set desc = "Toggles whether you can deactivate your currently active action when re-selecting it."
 	set category = "Alien"
