@@ -194,7 +194,7 @@
 
 	if(savefile_version < 30)
 		var/action_click_mode = 0
-		S["action_click_mode"] >> action_click_mode
+		S["xeno_ability_click_mode"] >> action_click_mode
 		S["action_click_mode"] << action_click_mode
 
 	savefile_version = SAVEFILE_VERSION_MAX
