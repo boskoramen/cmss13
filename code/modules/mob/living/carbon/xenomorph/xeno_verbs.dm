@@ -120,8 +120,8 @@
 
 
 /mob/living/carbon/xenomorph/verb/ability_deactivation_toggle()
-	set name = "Toggle Ability Deactivation"
-	set desc = "Toggles whether you can deactivate your currently active ability when re-selecting it."
+	set name = "Toggle Action Deactivation"
+	set desc = "Toggles whether you can deactivate your currently active action when re-selecting it."
 	set category = "Alien"
 
 	if (!client || !client.prefs)

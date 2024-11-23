@@ -157,9 +157,9 @@
 		var/toggle_prefs = 0
 		S["toggle_prefs"] >> toggle_prefs
 		if(toggle_prefs & (1<<2))
-			S["xeno_ability_click_mode"] << XENO_ABILITY_CLICK_MIDDLE
+			S["action_click_mode"] << XENO_ABILITY_CLICK_MIDDLE
 		else
-			S["xeno_ability_click_mode"] << XENO_ABILITY_CLICK_SHIFT
+			S["action_click_mode"] << XENO_ABILITY_CLICK_SHIFT
 
 	if(savefile_version < 27)
 		// Gives staff afk protection by default.
@@ -191,6 +191,11 @@
 				hair_style = "Longer Fringe"
 
 		S["hair_style_name"] << hair_style
+
+	if(savefile_version < 30)
+		var/action_click_mode = 0
+		S["action_click_mode"] >> action_click_mode
+		S["action_click_mode"] << action_click_mode
 
 	savefile_version = SAVEFILE_VERSION_MAX
 	return 1
@@ -237,7 +242,7 @@
 	S["toggles_langchat"] >> toggles_langchat
 	S["toggles_sound"] >> toggles_sound
 	S["toggle_prefs"] >> toggle_prefs
-	S["xeno_ability_click_mode"] >> xeno_ability_click_mode
+	S["action_click_mode"] >> action_click_mode
 	S["dual_wield_pref"] >> dual_wield_pref
 	S["toggles_flashing"] >> toggles_flashing
 	S["toggles_ert"] >> toggles_ert
@@ -330,7 +335,7 @@
 	toggles_langchat = sanitize_integer(toggles_langchat, 0, SHORT_REAL_LIMIT, initial(toggles_langchat))
 	toggles_sound = sanitize_integer(toggles_sound, 0, SHORT_REAL_LIMIT, initial(toggles_sound))
 	toggle_prefs = sanitize_integer(toggle_prefs, 0, SHORT_REAL_LIMIT, initial(toggle_prefs))
-	xeno_ability_click_mode = sanitize_integer(xeno_ability_click_mode, 1, XENO_ABILITY_CLICK_MAX, initial(xeno_ability_click_mode))
+	action_click_mode = sanitize_integer(action_click_mode, 1, XENO_ABILITY_CLICK_MAX, initial(action_click_mode))
 	dual_wield_pref = sanitize_integer(dual_wield_pref, 0, 2, initial(dual_wield_pref))
 	toggles_flashing= sanitize_integer(toggles_flashing, 0, SHORT_REAL_LIMIT, initial(toggles_flashing))
 	toggles_ert = sanitize_integer(toggles_ert, 0, SHORT_REAL_LIMIT, initial(toggles_ert))
@@ -447,7 +452,7 @@
 	S["toggles_langchat"] << toggles_langchat
 	S["toggles_sound"] << toggles_sound
 	S["toggle_prefs"] << toggle_prefs
-	S["xeno_ability_click_mode"] << xeno_ability_click_mode
+	S["action_click_mode"] << action_click_mode
 	S["dual_wield_pref"] << dual_wield_pref
 	S["toggles_flashing"] << toggles_flashing
 	S["toggles_ert"] << toggles_ert

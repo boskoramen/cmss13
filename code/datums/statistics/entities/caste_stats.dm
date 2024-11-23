@@ -1,24 +1,24 @@
 /datum/entity/player_stats/caste
 	var/name = null
 	var/total_hits = 0
-	var/list/abilities_used = list() // types of /datum/entity/statistic, "tail sweep" = 10, "screech" = 2
+	var/list/actions_used = list() // types of /datum/entity/statistic, "tail sweep" = 10, "screech" = 2
 
 /datum/entity/player_stats/caste/Destroy(force)
 	. = ..()
-	QDEL_LIST_ASSOC_VAL(abilities_used)
+	QDEL_LIST_ASSOC_VAL(actions_used)
 
-/datum/entity/player_stats/caste/proc/setup_action(ability)
-	if(!ability)
+/datum/entity/player_stats/caste/proc/setup_action(action)
+	if(!action)
 		return
-	var/ability_key = strip_improper(ability)
-	if(abilities_used["[ability_key]"])
-		return abilities_used["[ability_key]"]
+	var/action_key = strip_improper(action)
+	if(actions_used["[action_key]"])
+		return actions_used["[action_key]"]
 	var/datum/entity/statistic/S = new()
 	S.name = action_key
 	S.value = 0
-	abilities_used["[ability_key]"] = S
+	actions_used["[action_key]"] = S
 	return S
 
-/datum/entity/player_stats/caste/proc/track_personal_abilities_used(ability, amount = 1)
-	var/datum/entity/statistic/S = setup_action(ability)
+/datum/entity/player_stats/caste/proc/track_personal_actions_used(action, amount = 1)
+	var/datum/entity/statistic/S = setup_action(action)
 	S.value += amount

@@ -620,7 +620,7 @@ GLOBAL_LIST_INIT(limb_types_by_name, list(
 	if(!client)
 		return XENO_ABILITY_CLICK_MIDDLE
 
-	return client.prefs.xeno_action_click_mode
+	return client.prefs.action_click_mode
 
 /proc/xeno_action_mouse_pref_to_string(preference_value)
 	switch(preference_value)

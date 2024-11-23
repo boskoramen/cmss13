@@ -275,7 +275,7 @@
 		"<a href='?src=\ref[src];action=proccall;procpath=/client/proc/toggle_ammo_display_type'>Toggle Semi-Auto Ammo Counter</a><br>",
 		"<a href='?src=\ref[src];action=proccall;procpath=/client/proc/toggle_eject_to_hand'>Toggle 'Unload Weapon' Ejecting Magazines to Your Hands</a><br>",
 		"<a href='?src=\ref[src];action=proccall;procpath=/client/proc/toggle_automatic_punctuation'>Toggle Automatic Punctuation</a><br>",
-		"<a href='?src=\ref[src];action=proccall;procpath=/client/proc/toggle_ability_deactivation'>Toggle Ability Deactivation</a><br>",
+		"<a href='?src=\ref[src];action=proccall;procpath=/client/proc/toggle_action_deactivation'>Toggle Action Deactivation</a><br>",
 		"<a href='?src=\ref[src];action=proccall;procpath=/client/proc/toggle_clickdrag_override'>Toggle Combat Click-Drag Override</a><br>",
 		"<a href='?src=\ref[src];action=proccall;procpath=/client/proc/toggle_dualwield'>Toggle Alternate-Fire Dual Wielding</a><br>",
 		"<a href='?src=\ref[src];action=proccall;procpath=/client/proc/toggle_auto_shove'>Toggle Auto Shove</a><br>",
@@ -366,7 +366,7 @@
 		to_chat(src, SPAN_NOTICE("You will now automatically shove people in the way as the Queen."))
 	prefs.save_preferences()
 
-/client/proc/toggle_ability_deactivation() // Toggle whether the current ability can be deactivated when re-selected
+/client/proc/toggle_action_deactivation() // Toggle whether the current action can be deactivated when re-selected
 	prefs.toggle_prefs ^= TOGGLE_ABILITY_DEACTIVATION_OFF
 	if (prefs.toggle_prefs & TOGGLE_ABILITY_DEACTIVATION_OFF)
 		to_chat(src, SPAN_NOTICE("Your current ability can no longer be toggled off when re-selected."))

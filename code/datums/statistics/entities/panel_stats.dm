@@ -354,8 +354,8 @@
 			if(S.nemesis)
 				caste_nemesis = list("name" = S.nemesis.name, "value" = S.nemesis.value)
 
-			for(var/sub_iteration in S.abilities_used)
-				var/datum/entity/statistic/D = S.abilities_used[sub_iteration]
+			for(var/sub_iteration in S.actions_used)
+				var/datum/entity/statistic/D = S.actions_used[sub_iteration]
 				caste_abilities_used += list(list("name" = D.name, "value" = D.value))
 
 			for(var/sub_iteration in S.humans_killed)
@@ -635,8 +635,8 @@
 		if(S.nemesis)
 			caste_nemesis = list("name" = S.nemesis.name, "value" = S.nemesis.value)
 
-		for(var/sub_iteration in S.abilities_used)
-			var/datum/entity/statistic/D = S.abilities_used[sub_iteration]
+		for(var/sub_iteration in S.actions_used)
+			var/datum/entity/statistic/D = S.actions_used[sub_iteration]
 			if(!D)
 				continue
 			caste_abilities_used += list(list("name" = D.name, "value" = D.value))

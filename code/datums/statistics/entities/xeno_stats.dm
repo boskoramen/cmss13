@@ -120,19 +120,19 @@
 		var/datum/entity/player_stats/caste/R = GLOB.round_statistics.setup_caste_stats(caste)
 		R.count_niche_stat(niche_name, amount)
 
-/datum/entity/player_stats/xeno/proc/track_personal_abilities_used(caste, ability, amount = 1)
+/datum/entity/player_stats/xeno/proc/track_personal_actions_used(caste, action, amount = 1)
 	var/datum/entity/player_stats/caste/S = setup_caste_stats(caste)
-	S.track_personal_abilities_used(ability, amount)
+	S.track_personal_actions_used(action, amount)
 	if(GLOB.round_statistics)
 		var/datum/entity/player_stats/caste/R = GLOB.round_statistics.setup_caste_stats(caste)
-		R.track_personal_abilities_used(ability, amount)
+		R.track_personal_actions_used(action, amount)
 
-/mob/living/carbon/xenomorph/proc/track_ability_usage(ability, caste, amount = 1)
+/mob/living/carbon/xenomorph/proc/track_action_usage(action, caste, amount = 1)
 	if(statistic_exempt || !client || !mind)
 		return
 	var/datum/entity/player_stats/xeno/xeno_stats = mind.setup_xeno_stats()
 	if(caste_type && !isnull(xeno_stats))
-		xeno_stats.track_personal_abilities_used(caste_type, ability, amount)
+		xeno_stats.track_personal_actions_used(caste_type, action, amount)
 
 /datum/entity/player_stats/xeno/count_personal_steps_walked(caste, amount = 1)
 	var/datum/entity/player_stats/caste/S = setup_caste_stats(caste)

@@ -158,16 +158,16 @@
 	caste_stats_list["[caste_key]"] = new_stat
 	return new_stat
 
-/datum/entity/statistic/round/proc/setup_ability(ability)
-	if(!ability)
+/datum/entity/statistic/round/proc/setup_action(action)
+	if(!action)
 		return
-	var/ability_key = strip_improper(ability)
-	if(abilities_used["[ability_key]"])
-		return abilities_used["[ability_key]"]
+	var/action_key = strip_improper(action)
+	if(abilities_used["[action_key]"])
+		return abilities_used["[action_key]"]
 	var/datum/entity/statistic/S = new()
-	S.name = ability_key
+	S.name = action_key
 	S.value = 0
-	abilities_used["[ability_key]"] = S
+	abilities_used["[action_key]"] = S
 	return S
 
 /datum/entity/statistic/round/proc/recalculate_nemesis()
@@ -178,8 +178,8 @@
 		var/datum/entity/player_stats/job/job_entity = job_stats_list[job_statistic]
 		job_entity.recalculate_nemesis()
 
-/datum/entity/statistic/round/proc/track_ability_usage(ability, amount = 1)
-	var/datum/entity/statistic/S = setup_ability(ability)
+/datum/entity/statistic/round/proc/track_action_usage(action, amount = 1)
+	var/datum/entity/statistic/S = setup_action(action)
 	S.value += amount
 
 /datum/entity/statistic/round/proc/setup_faction(faction)

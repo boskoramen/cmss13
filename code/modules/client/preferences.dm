@@ -55,7 +55,7 @@ GLOBAL_LIST_INIT(bgstate_options, list(
 	var/ooccolor
 	var/be_special = 0 // Special role selection
 	var/toggle_prefs = TOGGLE_DIRECTIONAL_ATTACK|TOGGLE_MEMBER_PUBLIC|TOGGLE_AMBIENT_OCCLUSION|TOGGLE_VEND_ITEM_TO_HAND // flags in #define/mode.dm
-	var/xeno_ability_click_mode = XENO_ABILITY_CLICK_MIDDLE
+	var/action_click_mode = XENO_ABILITY_CLICK_MIDDLE
 	var/auto_fit_viewport = FALSE
 	var/adaptive_zoom = 0
 	var/UI_style = "midnight"
@@ -607,7 +607,7 @@ GLOBAL_LIST_INIT(bgstate_options, list(
 			dat += "<b>Play Lobby Music:</b> <a href='?_src_=prefs;preference=lobby_music'><b>[(toggles_sound & SOUND_LOBBY) ? "Yes" : "No"]</b></a><br>"
 			dat += "<b>Play VOX Announcements:</b> <a href='?_src_=prefs;preference=sound_vox'><b>[(hear_vox) ? "Yes" : "No"]</b></a><br>"
 			dat += "<b>Default Ghost Night Vision Level:</b> <a href='?_src_=prefs;preference=ghost_vision_pref;task=input'><b>[ghost_vision_pref]</b></a><br>"
-			dat += "<b>Button To Activate Xenomorph Abilities:</b> <a href='?_src_=prefs;preference=mouse_button_activation;task=input'><b>[xeno_ability_mouse_pref_to_string(xeno_ability_click_mode)]</b></a><br>"
+			dat += "<b>Button To Activate Actions:</b> <a href='?_src_=prefs;preference=mouse_button_activation;task=input'><b>[xeno_action_mouse_pref_to_string(action_click_mode)]</b></a><br>"
 			dat += "<a href='?src=\ref[src];action=proccall;procpath=/client/proc/receive_random_tip'>Read Random Tip of the Round</a><br>"
 			if(CONFIG_GET(flag/allow_Metadata))
 				dat += "<b>OOC Notes:</b> <a href='?_src_=prefs;preference=metadata;task=input'> Edit </a>"
@@ -621,7 +621,7 @@ GLOBAL_LIST_INIT(bgstate_options, list(
 					</b> <a href='?_src_=prefs;preference=toggle_prefs;flag=[TOGGLE_HELP_INTENT_SAFETY]'><b>[toggle_prefs & TOGGLE_HELP_INTENT_SAFETY ? "On" : "Off"]</b></a><br>"
 			dat += "<b>Toggle Automatic Shove: \
 					</b> <a href='?_src_=prefs;preference=toggle_prefs;flag=[TOGGLE_AUTO_SHOVE_OFF]'><b>[toggle_prefs & TOGGLE_AUTO_SHOVE_OFF ? "Off" : "On"]</b></a><br>"
-			dat += "<b>Toggle Ability Deactivation: \
+			dat += "<b>Toggle Action Deactivation: \
 					</b> <a href='?_src_=prefs;preference=toggle_prefs;flag=[TOGGLE_ABILITY_DEACTIVATION_OFF]'><b>[toggle_prefs & TOGGLE_ABILITY_DEACTIVATION_OFF ? "Off" : "On"]</b></a><br>"
 			dat += "<b>Toggle Directional Assist: \
 					</b> <a href='?_src_=prefs;preference=toggle_prefs;flag=[TOGGLE_DIRECTIONAL_ATTACK]'><b>[toggle_prefs & TOGGLE_DIRECTIONAL_ATTACK ? "On" : "Off"]</b></a><br>"
@@ -1256,14 +1256,14 @@ GLOBAL_LIST_INIT(bgstate_options, list(
 					ghost_vision_pref = choice
 				if("mouse_button_activation")
 					var/static/list/mouse_button_list = list(
-						xeno_ability_mouse_pref_to_string(XENO_ABILITY_CLICK_MIDDLE) = XENO_ABILITY_CLICK_MIDDLE,
-						xeno_ability_mouse_pref_to_string(XENO_ABILITY_CLICK_SHIFT) = XENO_ABILITY_CLICK_SHIFT,
-						xeno_ability_mouse_pref_to_string(XENO_ABILITY_CLICK_RIGHT) = XENO_ABILITY_CLICK_RIGHT
+						xeno_action_mouse_pref_to_string(XENO_ABILITY_CLICK_MIDDLE) = XENO_ABILITY_CLICK_MIDDLE,
+						xeno_action_mouse_pref_to_string(XENO_ABILITY_CLICK_SHIFT) = XENO_ABILITY_CLICK_SHIFT,
+						xeno_action_mouse_pref_to_string(XENO_ABILITY_CLICK_RIGHT) = XENO_ABILITY_CLICK_RIGHT
 					)
 					var/choice = tgui_input_list(user, "Choose how you will activate your xenomorph and human abilities.", "Mouse Activation Button", mouse_button_list)
 					if(!choice)
 						return
-					xeno_ability_click_mode = mouse_button_list[choice]
+					action_click_mode = mouse_button_list[choice]
 					// This isn't that great of a way to do it, but ability code is already not that modular considering
 					// the fact that we have two datums for xeno/human abilities. Might need to refactor abilities as a whole in the future
 					// so that the `activable` type is the parent of both xeno/human abilities - it would get rid of this headache in an instant.
