@@ -622,7 +622,7 @@ GLOBAL_LIST_INIT(limb_types_by_name, list(
 
 	return client.prefs.action_click_mode
 
-/proc/xeno_action_mouse_pref_to_string(preference_value)
+/proc/action_mouse_pref_to_string(preference_value)
 	switch(preference_value)
 		if(XENO_ABILITY_CLICK_MIDDLE)
 			return "middle click"
@@ -635,4 +635,4 @@ GLOBAL_LIST_INIT(limb_types_by_name, list(
 /mob/proc/get_action_mouse_name()
 	var/ability = get_action_mouse_key()
 
-	return xeno_action_mouse_pref_to_string(ability)
+	return action_mouse_pref_to_string(ability)
