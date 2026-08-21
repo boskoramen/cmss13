@@ -1,7 +1,7 @@
 /// range that we can remove labels when we click near them with the removal tool
 #define LABEL_REMOVE_RANGE 20
 /// How often a tacmap can be submitted
-#define CANVAS_COOLDOWN_TIME 3 MINUTES
+#define CANVAS_COOLDOWN_TIME 0 // TODO: UNDO SETTING THIS TO 0
 /// List of minimap_flag=world.time for a faction wide cooldown on tacmap submissions
 GLOBAL_VAR_INIT(faction_tacmap_cooldown, alist()) // TODO: Change to GLOBAL_ALIST_EMPTY
 ///A player needs to be unbanned from ALL these roles in order to be able to use the minimap drawing tool
