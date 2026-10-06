@@ -168,15 +168,14 @@
 		// For example: multitiles
 		if (move_mode & MOVE_CONTENTS)
 			LAZYADD(turfs_to_process, new /datum/takeoff_turfs_to_process(old_turf, new_turf))
-	if (length(turfs_to_process))
-		for (var/datum/takeoff_turfs_to_process/to_process as anything in turfs_to_process)
-			var/turf/old_turf = to_process.old_turf
-			var/turf/new_turf = to_process.new_turf
-			for (var/atom/movable/in_shuttle as anything in old_turf)
-				if (in_shuttle.loc != old_turf)
-					continue
-				in_shuttle.onShuttleMove(new_turf, old_turf, movement_force, movement_direction, old_dock, src) //atoms
-				moved_atoms[in_shuttle] = old_turf
+	for (var/datum/takeoff_turfs_to_process/to_process as anything in turfs_to_process)
+		var/turf/old_turf = to_process.old_turf
+		var/turf/new_turf = to_process.new_turf
+		for (var/atom/movable/in_shuttle as anything in old_turf)
+			if (in_shuttle.loc != old_turf)
+				continue
+			in_shuttle.onShuttleMove(new_turf, old_turf, movement_force, movement_direction, old_dock, src) //atoms
+			moved_atoms[in_shuttle] = old_turf
 
 /obj/docking_port/mobile/proc/cleanup_runway(obj/docking_port/stationary/new_dock, list/old_turfs, list/new_turfs, list/areas_to_move, list/moved_atoms, rotation, movement_direction, area/underlying_old_area)
 	underlying_old_area.afterShuttleMove()

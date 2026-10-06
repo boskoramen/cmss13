@@ -77,6 +77,7 @@
 			turf.Exited(multitile)
 	multitile.bound_width = 1
 	multitile.bound_height = 1
+	..()
 
 /datum/element/multitile/proc/set_bounds(atom/movable/multitile)
 	SIGNAL_HANDLER

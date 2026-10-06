@@ -404,8 +404,13 @@ Parameters are passed from New.
 		var/turf/opaque_turf = loc
 		opaque_turf.directional_opacity = ALL_CARDINALS // No need to recalculate it in this case, it's guaranteed to be on afterwards anyways.
 
-	pass_flags = new()
-	initialize_pass_flags(pass_flags)
+	pass_flags = GLOB.pass_flags_cache[type]
+	if (isnull(pass_flags))
+		pass_flags = new()
+		initialize_pass_flags(pass_flags)
+		GLOB.pass_flags_cache[type] = pass_flags
+	else
+		initialize_pass_flags()
 	Decorate(mapload)
 
 	return INITIALIZE_HINT_NORMAL

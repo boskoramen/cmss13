@@ -346,7 +346,6 @@ All ShuttleMove procs go here
 	setDir(old_dir)
 	for(var/turf/closed/shuttle/tr_walls in old_locs)
 		tr_walls.set_opacity(1)
-	handle_multidoor()
 
 /*
 /obj/structure/ladder/beforeShuttleMove(turf/newT, rotation, move_mode, obj/docking_port/mobile/moving_dock)

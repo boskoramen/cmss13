@@ -257,7 +257,7 @@
 
 /obj/structure/machinery/door/airlock/multi_tile/almayer/containment
 	opacity = TRUE
-	width = 3
+	height = 3
 	unslashable = TRUE
 	unacidable = TRUE
 	no_panel = 1

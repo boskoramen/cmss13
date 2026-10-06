@@ -419,7 +419,7 @@
 	#undef DIAGONAL_TURF_LAT
 	#undef TARGET_TURF
 
-/turf/Entered(atom/movable/entered_movable, forget)
+/turf/Entered(atom/movable/entered_movable, atom/OldLoc)
 	SHOULD_CALL_PARENT(TRUE)
 
 	..() // Shouldn't do anything but to satisfy lint

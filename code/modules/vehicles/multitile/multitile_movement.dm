@@ -70,6 +70,7 @@
 		if(!should_move)
 			return FALSE
 
+	var/turf/current_loc = get_turf(src)
 	for(var/obj/item/hardpoint/H in hardpoints)
 		H.on_move(old_turf, current_loc, direction)
 

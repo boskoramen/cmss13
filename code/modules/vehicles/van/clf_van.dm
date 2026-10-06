@@ -8,8 +8,8 @@
 	pixel_x = -16
 	pixel_y = -16
 
-	bound_width = 64
-	bound_height = 64
+	width = 2
+	height = 2
 
 	bound_x = 0
 	bound_y = 0

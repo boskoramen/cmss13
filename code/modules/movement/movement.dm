@@ -210,6 +210,6 @@
 		moved_to_nullspace(old_loc, old_locs, NONE, TRUE)
 
 // resets our langchat position if we get forcemoved out of a locker or something
-/mob/doMove(atom/destination, process_old_loc, process_new_loc)
+/mob/doMove(atom/destination)
 	. = ..()
 	langchat_image?.loc = src
