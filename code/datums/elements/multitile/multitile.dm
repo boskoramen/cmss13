@@ -99,7 +99,7 @@
 	if (can_block_movement)
 		process_turf_blockers(multitile, multitile.loc, old_locs)
 	if (on_set_bounds)
-		call(src, on_set_bounds)(multitile, old_locs)
+		INVOKE_ASYNC(src, on_set_bounds, multitile, old_locs)
 
 // Native BYOND handling for multitile movement is not compatible with how we calculate collisions
 /datum/element/multitile/proc/move_override(atom/movable/multitile, turf/new_turf)
@@ -143,7 +143,7 @@
 
 	process_turf_blockers(multitile, old_loc, old_locs)
 	if (on_moved)
-		call(src, on_moved)(multitile, old_locs)
+		INVOKE_ASYNC(src, on_moved, multitile, old_locs)
 
 /datum/element/multitile/proc/process_turf_blockers(atom/movable/multitile, atom/old_loc, list/atom/old_locs)
 	LAZYINITLIST(old_locs)
