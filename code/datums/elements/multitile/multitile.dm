@@ -50,7 +50,8 @@
 	src.dynamic = dynamic
 	src.scale = scale
 
-	RegisterSignal(target, COMSIG_ATOM_AFTER_SUCCESSFUL_INITIALIZED_ON, PROC_REF(set_bounds))
+	set_bounds(target)
+
 	RegisterSignal(target, COMSIG_MOVABLE_PRE_MOVE, PROC_REF(move_override))
 	RegisterSignal(target, COMSIG_MOVABLE_DO_MOVE, PROC_REF(set_do_move_flags))
 	RegisterSignal(target, list(
@@ -73,7 +74,8 @@
 	))
 	if (can_block_movement)
 		for (var/turf/turf in multitile.locs)
-			if (turf == multitile.loc) continue
+			if (turf == multitile.loc)
+				continue
 			turf.Exited(multitile)
 	multitile.bound_width = 1
 	multitile.bound_height = 1
@@ -122,8 +124,9 @@
 					movement_blocked = TRUE
 			continue
 
-		if(!to_enter.Enter(multitile))
+		if(!to_enter.Enter(multitile, old_turfs))
 			movement_blocked = TRUE
+			break
 
 	if (!movement_blocked)
 		multitile.forceMove(new_turf)

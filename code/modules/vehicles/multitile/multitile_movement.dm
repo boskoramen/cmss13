@@ -162,7 +162,7 @@
 					movement_blocked ||= !Collide(obstacle)
 			continue
 
-		if(!to_enter.Enter(src))
+		if(!to_enter.Enter(src, old_turfs))
 			movement_blocked = TRUE
 
 	return movement_blocked

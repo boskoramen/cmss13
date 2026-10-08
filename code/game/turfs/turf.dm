@@ -295,6 +295,7 @@
 	if (QDELETED(mover) || !isturf(mover.loc))
 		return FALSE
 
+	// TODO: make it so we do not actually modify args passed to Enter but instead send a signal for Enter forget overrides that is set by multitile element
 	var/list/forget
 	// oldloc is not a list when Enter is called internally
 	if (isturf(oldloc))
