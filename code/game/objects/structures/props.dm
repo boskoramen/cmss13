@@ -1,3 +1,19 @@
+/obj/structure/prop
+	/// Width of the vehicle when facing SOUTH (by default at 32 pixel scale, e.g. 1 width = 32 pixel bound_width)
+	var/width = 1
+	/// Height of the vehicle when facing SOUTH (by default at 32 pixel scale, e.g. 1 height = 32 pixel bound_height)
+	var/height = 1
+
+	/// How much to offset hitbox on x-axis when facing SOUTH (by default at 32 pixel scale, e.g. 1 x_offset = 32 pixel bound_x)
+	var/x_offset = 0
+	/// How much to offset hitbox on y-axis when facing SOUTH (by default at 32 pixel scale, e.g. 1 y_offset = 32 pixel bound_y)
+	var/y_offset = 0
+
+/obj/structure/prop/Initialize(mapload, ...)
+	. = ..()
+	if (width > 1 || height > 1)
+		AddElement(/datum/element/multitile, width, height, can_block_movement, x_offset = x_offset, y_offset = y_offset)
+
 /obj/structure/prop/tower
 	name = "destroyed comms tower"
 	desc = "An old company comms tower used to transmit communications between subspace bodies. Looks like this one has seen better days."
@@ -7,7 +23,7 @@
 	unacidable = TRUE
 	density = TRUE
 	layer = ABOVE_FLY_LAYER
-	bound_height = 96
+	height = 3
 
 /obj/structure/prop/dam
 	density = TRUE
@@ -17,7 +33,7 @@
 	desc = "An old mining drill, seemingly used for mining. And possibly drilling."
 	icon = 'icons/obj/structures/props/industrial/drill.dmi'
 	icon_state = "drill"
-	bound_height = 96
+	height = 3
 	var/on = FALSE//if this is set to on by default, the drill will start on, doi
 
 /obj/structure/prop/dam/drill/attackby(obj/item/W, mob/user)
@@ -1175,8 +1191,8 @@
 	icon = 'icons/obj/structures/props/static_defence_prop.dmi'
 	icon_state = "gun_platform"
 	layer = XENO_HIDING_LAYER
-	bound_height = 32
-	bound_width = 64
+	height = 1
+	width = 2
 	density = TRUE
 	unslashable = TRUE
 	unacidable = TRUE
@@ -1598,8 +1614,8 @@
 	desc = "A grim mound of body bags stacked haphazardly."
 	icon = 'icons/obj/structures/props/64x64_bodybag_pile.dmi'
 	icon_state = "bodybag_pile"
-	bound_height = 64
-	bound_width = 64
+	height = 2
+	width = 2
 	density = TRUE
 	layer = BIG_XENO_LAYER
 
@@ -1608,8 +1624,8 @@
 	desc = "A grim mound of body bags stacked haphazardly, their surfaces blackened and blistered from intense heat. The contents are partially burned."
 	icon = 'icons/obj/structures/props/64x64_bodybag_pile.dmi'
 	icon_state = "bodybag_pile"
-	bound_height = 64
-	bound_width = 64
+	height = 2
+	width = 2
 	density = TRUE
 	dir = 4
 	layer = BIG_XENO_LAYER

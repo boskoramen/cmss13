@@ -561,6 +561,7 @@
 	else
 		pixel_x = initial(pixel_x)
 		pixel_y = initial(pixel_y)
+		// TODO: fix this
 		bound_width = initial(bound_width)
 		bound_height = initial(bound_height)
 		icon_state = initial(icon_state)
