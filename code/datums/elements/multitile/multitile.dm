@@ -131,7 +131,6 @@
 
 		if(!to_enter.Enter(multitile, old_turfs))
 			movement_blocked = TRUE
-			break
 
 	if (!movement_blocked)
 		multitile.forceMove(new_turf)

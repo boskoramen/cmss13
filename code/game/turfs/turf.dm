@@ -437,7 +437,7 @@
 			cell.on_turf_entered(entered_movable)
 
 	if (entered_movable.can_block_movement)
-		LAZYADD(movement_blockers, entered_movable)
+		LAZYOR(movement_blockers, entered_movable)
 
 // No need to register deletion signal, this call happens automatically when any movable is destroyed via `moveToNullspace()` call
 /turf/Exited(atom/movable/mover)
