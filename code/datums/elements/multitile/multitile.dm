@@ -72,19 +72,24 @@
 		COMSIG_MOVABLE_MOVED_TO_NULLSPACE,
 		COMSIG_ATOM_DIR_CHANGE,
 	))
+	var/list/turf/old_locs = multitile.locs
+	multitile.bound_width = initial(multitile.bound_width)
+	multitile.bound_height = initial(multitile.bound_height)
+	multitile.bound_x = initial(multitile.bound_x)
+	multitile.bound_y = initial(multitile.bound_y)
 	if (can_block_movement)
 		for (var/turf/turf in multitile.locs)
-			if (turf == multitile.loc)
+			if (turf in old_locs)
 				continue
 			turf.Exited(multitile)
-	multitile.bound_width = 1
-	multitile.bound_height = 1
 	..()
 
 /datum/element/multitile/proc/set_bounds(atom/movable/multitile)
 	SIGNAL_HANDLER
 
 	ASSERT(multitile.dir in CARDINAL_DIRS, "Trying to set bounds for a multitile that is not facing a cardinal direction")
+	// Make sure to clean up ALL values modified here, otherwise will lead to problems
+	// such as jittery tile movement
 	var/list/atom/old_locs = multitile.locs
 	if (multitile.dir in list(NORTH, SOUTH))
 		multitile.bound_width = width * scale
@@ -171,6 +176,7 @@
 
 	processed_areas = list(get_area(multitile))
 	if (length(entered))
+		// TODO: use a different signal
 		var/call_crossed = !(SEND_SIGNAL(multitile, COMSIG_MOVABLE_FORCEMOVE_PRE_CROSSED) & COMPONENT_IGNORE_CROSS)
 		for (var/atom/entered_atom as anything in entered)
 			entered_atom.Entered(multitile, old_loc)
