@@ -17,12 +17,7 @@
 		PF.flags_can_pass_all = PASS_THROUGH|PASS_BUILDING_ONLY
 
 /obj/structure/grille/fence
-	var/height = 3
 	health = 50
-
-/obj/structure/grille/fence/Initialize()
-	. = ..()
-	AddElement(/datum/element/multitile, 1, height, FALSE, can_block_movement)
 
 /obj/structure/grille/fence/healthcheck()
 	if(health <= 0)

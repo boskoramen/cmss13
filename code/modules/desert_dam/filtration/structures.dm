@@ -145,13 +145,6 @@
 */
 /obj/structure/filtration
 	name = "filtration machine"
-	var/width = 1
-	var/height = 1
-
-/obj/structure/filtration/Initialize(mapload, ...)
-	. = ..()
-	if (width > 1 || height > 1)
-		AddElement(/datum/element/multitile, width, height, can_block_movement)
 
 /obj/structure/filtration/machine_32x32
 	icon = 'icons/turf/floors/32x32.dmi'

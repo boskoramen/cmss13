@@ -689,7 +689,6 @@ GLOBAL_LIST_INIT(airlock_wire_descriptions, flatten_numeric_alist(alist(
 				var/obj/structure/airlock_assembly/doors_assembly = new assembly_type(loc)
 				if(istype(doors_assembly, /obj/structure/airlock_assembly/multi_tile))
 					doors_assembly.setDir(dir)
-					doors_assembly.update_collision_box()
 
 				doors_assembly.anchored = TRUE
 				if(mineral)

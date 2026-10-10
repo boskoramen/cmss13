@@ -203,6 +203,8 @@ GLOBAL_LIST_EMPTY(all_static_telecomms_towers)
 	toggled = FALSE
 	on = FALSE
 	freq_listening = list(COLONY_FREQ)
+	width = 2
+	height = 2
 	var/toggle_cooldown = 0
 
 	/// Tower has been taken over by xenos, is not usable
@@ -225,7 +227,6 @@ GLOBAL_LIST_EMPTY(all_static_telecomms_towers)
 	RegisterSignal(src, COMSIG_MOVABLE_TURF_ENTERED, PROC_REF(register_with_turf))
 	if(!mapload)
 		register_with_turf()
-	AddElement(/datum/element/multitile, 2, 2, can_block_movement)
 
 /// Handler for callback of COMSIG_MOVABLE_TURF_ENTERED (turf changed)
 /obj/structure/machinery/telecomms/relay/preset/tower/mapcomms/proc/register_with_turf(atom/movable/source, turf/new_turf)

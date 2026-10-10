@@ -4,10 +4,6 @@
 	icon = 'icons/obj/structures/props/phonebox.dmi'
 	icon_state = "phonebox_on_empty_closed"
 	density = TRUE
-	/// Width of the vehicle when facing SOUTH (by default at 32 pixel scale, e.g. 1 width = 32 pixel bound_width)
-	var/width = 1
-	/// Height of the vehicle when facing SOUTH (by default at 32 pixel scale, e.g. 1 height = 32 pixel bound_height)
-	var/height = 2
 	material = MATERIAL_METAL
 	anchored = TRUE
 	layer = BETWEEN_OBJECT_ITEM_LAYER
@@ -16,11 +12,6 @@
 
 	open_sound = 'sound/effects/metal_door_open.ogg'
 	close_sound = 'sound/effects/metal_door_close.ogg'
-
-/obj/structure/closet/phonebox/Initialize()
-	. = ..()
-	if (width > 1 || height > 1)
-		AddElement(/datum/element/multitile, width, height, can_block_movement)
 
 /obj/structure/closet/phonebox/update_icon()
 	icon_state = "phonebox_on_open"
@@ -99,10 +90,6 @@
 	icon = 'icons/obj/structures/props/phonebox.dmi'
 	icon_state = "phonebox_off_empty_closed"
 	desc = "It's a phonebox, outdated but reliable technology. These are used to communicate throughout the colony and connected colonies without interference. As reliable as they are, it seems the line is down."
-	/// Width of the vehicle when facing SOUTH (by default at 32 pixel scale, e.g. 1 width = 32 pixel bound_width)
-	var/width = 1
-	/// Height of the vehicle when facing SOUTH (by default at 32 pixel scale, e.g. 1 height = 32 pixel bound_height)
-	var/height = 2
 	density = TRUE
 	anchored = TRUE
 	use_power = 0
@@ -118,8 +105,6 @@
 	. = ..()
 	update_icon()
 	flags_atom |= USES_HEARING
-	if (width > 1 || height > 1)
-		AddElement(/datum/element/multitile, width, height, can_block_movement, x_offset = x_offset, y_offset = y_offset)
 
 /obj/structure/machinery/phonebox/Destroy()
 	if(occupant)

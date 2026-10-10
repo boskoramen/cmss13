@@ -717,8 +717,6 @@
 	name = "abstract weapon"
 	icon = 'icons/obj/structures/props/dropship/dropship_equipment64.dmi'
 	equip_categories = list(DROPSHIP_WEAPON)
-	var/width = 1
-	var/height = 2
 	uses_ammo = TRUE
 	is_weapon = TRUE
 	screen_mode = 1
@@ -732,11 +730,8 @@
 	/// True if this weapon can only be fired in Fire Missions (not Direct)
 	var/fire_mission_only = TRUE
 
-/obj/structure/dropship_equipment/weapon/Initialize(mapload, ...)
-	. = ..()
-	AddElement(/datum/element/multitile, width, height, can_block_movement)
-
 /obj/structure/dropship_equipment/weapon/update_equipment()
+	// TODO: fix this
 	if(ship_base)
 		setDir(ship_base.dir)
 		RemoveElement(/datum/element/multitile, width, height, can_block_movement)

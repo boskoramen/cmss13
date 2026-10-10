@@ -11,8 +11,8 @@
 	width = 2
 	height = 2
 
-	bound_x = 0
-	bound_y = 0
+	x_offset = 0
+	y_offset = 0
 
 	interior_map = /datum/map_template/interior/clf_van
 

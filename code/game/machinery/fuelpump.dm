@@ -5,6 +5,9 @@
 	icon = 'icons/obj/structures/machinery/fuelpump.dmi'
 	icon_state = "fuelpump_off"
 	pixel_x = -64
+	width = 4
+	height = 1
+	x_offset = -2
 	health = 2500
 	density = TRUE
 	anchored = TRUE
@@ -19,7 +22,6 @@
 	var/area/my_area = get_area(src)
 	if(my_area)
 		SShijack.area_machinery_lookup[my_area] = src
-	AddElement(/datum/element/multitile, 4, 1, can_block_movement, x_offset = -2)
 
 /obj/structure/machinery/fuelpump/Destroy(force)
 	for(var/key,machine in SShijack.area_machinery_lookup)

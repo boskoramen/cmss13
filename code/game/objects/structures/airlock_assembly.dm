@@ -29,8 +29,6 @@
 	)
 	var/glass = AIRLOCK_NOGLASS // see defines
 	var/created_name = null
-	/// Used for multitile assemblies
-	var/height = 1
 
 /obj/structure/airlock_assembly/Initialize(mapload, ...)
 	. = ..()
@@ -277,10 +275,6 @@
 		return "/obj/structure/machinery/door/airlock/multi_tile/almayer/[airlock_type][glass ? "" : "/solid"]"
 	return "/obj/structure/machinery/door/airlock/almayer/[airlock_type][glass ? "/glass" : ""]"
 
-/// Used for overloading proc in multi_tile
-/obj/structure/airlock_assembly/proc/update_collision_box()
-	return
-
 /obj/structure/airlock_assembly/multi_tile
 	icon = 'icons/obj/structures/doors/airlock_assembly2x1.dmi'
 	icon_state = "assembly_generic0"
@@ -288,14 +282,7 @@
 
 /obj/structure/airlock_assembly/multi_tile/Initialize(mapload, ...)
 	. = ..()
-	AddElement(/datum/element/multitile, 1, height, can_block_movement)
-	update_collision_box()
 	update_icon()
-
-/obj/structure/airlock_assembly/multi_tile/Move()
-	. = ..()
-	update_collision_box()
-
 
 #undef STATE_STANDARD
 #undef STATE_CIRCUIT

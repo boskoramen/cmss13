@@ -26,13 +26,7 @@
 	/// Defaults to the size of a tile in pixels.
 	var/scale
 
-
-	/// Proc ref to be called when set bounds is called, specify in any child definitions
-	var/on_set_bounds
-	/// Proc ref to be called when movable is moved, specify in any child definitions
-	var/on_moved
-
-/datum/element/multitile/Attach(datum/target, width, height, can_block_movement, x_offset = 0, y_offset = 0, dynamic = FALSE, scale = world.icon_size)
+/datum/element/multitile/Attach(datum/target, width, height, can_block_movement, x_offset = 0, y_offset = 0, dynamic = FALSE, scale = world.icon_size, on_set_bounds, on_moved)
 	. = ..()
 	if (. == ELEMENT_INCOMPATIBLE)
 		return
@@ -103,8 +97,7 @@
 		multitile.bound_y = x_offset * scale
 	if (can_block_movement)
 		process_turf_blockers(multitile, multitile.loc, old_locs)
-	if (on_set_bounds)
-		INVOKE_ASYNC(src, on_set_bounds, multitile, old_locs)
+	SEND_SIGNAL(multitile, COMSIG_ATOM_MULTITILE_SET_BOUNDS, old_locs)
 
 // Native BYOND handling for multitile movement is not compatible with how we calculate collisions
 /datum/element/multitile/proc/move_override(atom/movable/multitile, turf/new_turf)
@@ -146,8 +139,6 @@
 	SIGNAL_HANDLER
 
 	process_turf_blockers(multitile, old_loc, old_locs)
-	if (on_moved)
-		INVOKE_ASYNC(src, on_moved, multitile, old_locs)
 
 /datum/element/multitile/proc/process_turf_blockers(atom/movable/multitile, atom/old_loc, list/atom/old_locs)
 	LAZYINITLIST(old_locs)
@@ -188,3 +179,11 @@
 					if (movable == multitile)
 						continue
 					movable.Crossed(multitile, old_loc)
+
+/datum/element/multitile/proc/set_filler_turfs(atom/movable/multitile, list/atom/old_locs)
+	// Reset all filler_turfs because it is not necessarily equal to locate_filler_turfs()
+	for (var/turf/filler_turf as anything in old_locs)
+		filler_turf.set_opacity(null)
+
+	for (var/turf/filler as anything in multitile.locs)
+		filler.set_opacity(multitile.opacity)

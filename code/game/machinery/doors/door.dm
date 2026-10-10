@@ -14,7 +14,6 @@
 	var/open_layer = DOOR_OPEN_LAYER
 	var/closed_layer = DOOR_CLOSED_LAYER
 	var/id = ""
-	var/height = 1
 
 	var/secondsElectrified = 0
 	var/visible = TRUE
@@ -36,7 +35,23 @@
 	. = ..()
 	layer = density ? closed_layer : open_layer
 	if (height > 1)
-		AddElement(/datum/element/multitile/door, 1, height, can_block_movement, dynamic = TRUE)
+		AddElement(/datum/element/multitile, 1, height, can_block_movement, dynamic = TRUE)
+		RegisterSignal(src, COMSIG_ATOM_SET_OPACITY, PROC_REF(handle_opacity_change))
+	RegisterSignal(src, list(COMSIG_MOVABLE_MOVED, COMSIG_MOVABLE_MOVED_TO_NULLSPACE, COMSIG_ATOM_MULTITILE_SET_BOUNDS), PROC_REF(set_filler_turfs))
+
+/obj/structure/machinery/door/proc/handle_opacity_change(source, new_opacity)
+	SIGNAL_HANDLER
+	for (var/turf/filler_turf as anything in locs)
+		filler_turf.set_opacity(new_opacity)
+
+/obj/structure/machinery/door/proc/set_filler_turfs(source, list/atom/old_locs)
+	SIGNAL_HANDLER
+	// Reset all filler_turfs because it is not necessarily equal to locate_filler_turfs()
+	for (var/turf/filler_turf as anything in old_locs)
+		filler_turf.set_opacity(null)
+
+	for (var/turf/filler_turf as anything in locs)
+		filler_turf.set_opacity(opacity)
 
 /obj/structure/machinery/door/Destroy()
 	. = ..()
