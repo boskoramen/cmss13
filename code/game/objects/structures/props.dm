@@ -1,10 +1,3 @@
-/obj/structure/prop
-
-/obj/structure/prop/Initialize(mapload, ...)
-	. = ..()
-	if (width > 1 || height > 1)
-		AddElement(/datum/element/multitile, width, height, can_block_movement, x_offset = x_offset, y_offset = y_offset)
-
 /obj/structure/prop/tower
 	name = "destroyed comms tower"
 	desc = "An old company comms tower used to transmit communications between subspace bodies. Looks like this one has seen better days."
@@ -58,10 +51,8 @@
 	icon_state = "truck"
 	unslashable = TRUE
 	unacidable = TRUE
-
-/obj/structure/prop/dam/truck/Initialize(mapload, ...)
-	. = ..()
-	AddElement(/datum/element/multitile, 2, 2, can_block_movement)
+	height = 2
+	width = 2
 
 /obj/structure/prop/dam/truck/damaged
 	icon_state = "truck_damaged"
@@ -83,10 +74,8 @@
 	icon_state = "van"
 	unslashable = TRUE
 	unacidable = TRUE
-
-/obj/structure/prop/dam/van/Initialize(mapload, ...)
-	. = ..()
-	AddElement(/datum/element/multitile, 2, 2, can_block_movement)
+	height = 2
+	width = 2
 
 /obj/structure/prop/dam/van/damaged
 	icon_state = "van_damaged"
@@ -97,10 +86,8 @@
 	icon_state = "crane"
 	unslashable = TRUE
 	unacidable = TRUE
-
-/obj/structure/prop/dam/crane/Initialize(mapload, ...)
-	. = ..()
-	AddElement(/datum/element/multitile, 2, 2, can_block_movement)
+	width = 2
+	height = 2
 
 /obj/structure/prop/dam/crane/damaged
 	icon_state = "crane_damaged"
@@ -230,11 +217,8 @@
 	name = "boulder"
 	desc = "A large rock. It's not cooking anything."
 	icon = 'icons/obj/structures/props/natural/boulder_large.dmi'
-
-
-/obj/structure/prop/dam/large_boulder/Initialize(mapload, ...)
-	. = ..()
-	AddElement(/datum/element/multitile, 2, 2, can_block_movement)
+	width = 2
+	height = 2
 
 /obj/structure/prop/dam/large_boulder/boulder1
 	icon_state = "boulder_large1"
@@ -246,10 +230,8 @@
 	name = "boulder"
 	desc = "A large rock. It's not cooking anything."
 	icon = 'icons/obj/structures/props/natural/boulder_wide.dmi'
-
-/obj/structure/prop/dam/wide_boulder/Initialize(mapload, ...)
-	. = ..()
-	AddElement(/datum/element/multitile, 2, 1, can_block_movement)
+	width = 2
+	height = 1
 
 /obj/structure/prop/dam/wide_boulder/boulder1
 	icon_state = "boulder1"
@@ -310,11 +292,9 @@
 	explo_proof = TRUE
 	unslashable = TRUE
 	unacidable = TRUE
+	width = 1
+	height = 3
 	var/on = FALSE
-
-/obj/structure/prop/turbine/Initialize(mapload, ...)
-	. = ..()
-	AddElement(/datum/element/multitile, 1, 3, can_block_movement)
 
 /obj/structure/prop/turbine/attackby(obj/item/W, mob/user)
 	. = ..()
@@ -370,10 +350,8 @@
 	icon = 'icons/obj/structures/props/industrial/power_transformer.dmi'
 	icon_state = "transformer"
 	desc = "A passive electrical component that controls where and which circuits power flows into."
-
-/obj/structure/prop/power_transformer/Initialize(mapload, ...)
-	. = ..()
-	AddElement(/datum/element/multitile, 2, 2, can_block_movement)
+	height = 2
+	width = 2
 
 //cash registers
 
@@ -822,10 +800,8 @@
 	icon_state = "van"
 	unslashable = FALSE
 	unacidable = FALSE
-
-/obj/structure/prop/vehicles/Initialize(mapload, ...)
-	. = ..()
-	AddElement(/datum/element/multitile, 2, 2, can_block_movement)
+	width = 2
+	height = 2
 
 /obj/structure/prop/vehicles/crawler
 	name = "colony crawler"
@@ -1297,10 +1273,8 @@
 	icon = 'icons/obj/structures/props/ice_colony/fabs_64.dmi'
 	icon_state = "orange"//instance icons
 	layer = 3
-
-/obj/structure/prop/invuln/ice_prefab/standalone/Initialize(mapload, ...)
-	. = ..()
-	AddElement(/datum/element/multitile, 2, 2, can_block_movement)
+	height = 2
+	width = 2
 
 /obj/structure/prop/invuln/ice_prefab/standalone/trim
 	icon_state = "orange_trim"//instance icons

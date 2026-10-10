@@ -253,10 +253,8 @@
 	desc = "A series of pipes collecting water from the river to take it to the plant for filtration."
 	icon = 'icons/obj/structures/props/industrial/pipes.dmi'
 	icon_state = "upper_1" //use instances to set the types.
-
-/obj/structure/filtration/collector_pipes/Initialize(mapload, ...)
-	. = ..()
-	AddElement(/datum/element/multitile, 2, 1, can_block_movement)
+	width = 2
+	height = 1
 
 /obj/structure/filtration/machine_96x96
 	icon = 'icons/obj/structures/props/industrial/96x96.dmi'

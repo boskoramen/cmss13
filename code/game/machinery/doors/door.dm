@@ -35,7 +35,6 @@
 	. = ..()
 	layer = density ? closed_layer : open_layer
 	if (height > 1)
-		AddElement(/datum/element/multitile, 1, height, can_block_movement, dynamic = TRUE)
 		RegisterSignal(src, COMSIG_ATOM_SET_OPACITY, PROC_REF(handle_opacity_change))
 	RegisterSignal(src, list(COMSIG_MOVABLE_MOVED, COMSIG_MOVABLE_MOVED_TO_NULLSPACE, COMSIG_ATOM_MULTITILE_SET_BOUNDS), PROC_REF(set_filler_turfs))
 

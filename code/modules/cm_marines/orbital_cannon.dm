@@ -13,6 +13,9 @@ GLOBAL_LIST(ob_type_fuel_requirements)
 	anchored = TRUE
 	layer = LADDER_LAYER
 	unacidable = TRUE
+	width = 4
+	height = 2
+	y_offset = 2
 	var/obj/structure/orbital_tray/tray
 	var/chambered_tray = FALSE
 	var/loaded_tray = FALSE
@@ -38,8 +41,6 @@ GLOBAL_LIST(ob_type_fuel_requirements)
 		for(var/i=1 to 3)
 			amt = pick_n_take(L)
 			GLOB.ob_type_fuel_requirements += amt
-
-	AddElement(/datum/element/multitile, 4, 2, can_block_movement, y_offset = 2)
 
 	var/turf/T = locate(x+1,y+2,z)
 	var/obj/structure/orbital_tray/O = new(T)
@@ -269,13 +270,11 @@ GLOBAL_LIST_EMPTY(orbital_cannon_cancellation)
 	unacidable = TRUE
 	pixel_y = -9
 	pixel_x = -6
+	width = 2
+	height = 1
 	var/obj/structure/ob_ammo/warhead/warhead
 	var/obj/structure/orbital_cannon/linked_ob
 	var/fuel_amt = 0
-
-/obj/structure/orbital_tray/Initialize(mapload, ...)
-	. = ..()
-	AddElement(/datum/element/multitile, 2, 1, can_block_movement)
 
 /obj/structure/orbital_tray/Destroy()
 	QDEL_NULL(warhead)

@@ -10,6 +10,9 @@ GLOBAL_DATUM(almayer_aa_cannon, /obj/structure/anti_air_cannon)
 	layer = LADDER_LAYER
 	unslashable = TRUE
 	unacidable = TRUE
+	width = 4
+	height = 2
+	y_offset = 2
 
 	// Which ship section is being protected by the AA gun
 	var/protecting_section = ""
@@ -19,7 +22,6 @@ GLOBAL_DATUM(almayer_aa_cannon, /obj/structure/anti_air_cannon)
 	. = ..()
 	if(!GLOB.almayer_aa_cannon)
 		GLOB.almayer_aa_cannon = src
-	AddElement(/datum/element/multitile, 4, 2, can_block_movement, y_offset = 2)
 
 /obj/structure/anti_air_cannon/Destroy()
 	. = ..()
