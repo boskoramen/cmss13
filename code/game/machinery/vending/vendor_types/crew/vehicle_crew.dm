@@ -14,6 +14,9 @@
 	vend_delay = 4 SECONDS
 	vend_sound = 'sound/machines/medevac_extend.ogg'
 
+	width = 2
+	height = 1
+
 	var/selected_vehicle
 	var/budget_points = 0
 	var/available_categories = VEHICLE_ALL_AVAILABLE
@@ -34,7 +37,6 @@
 		else
 			linked_supply_controller = GLOB.supply_controller //we default to normal budget on wrong input
 
-	AddElement(/datum/element/multitile, 2, 1, can_block_movement)
 	RegisterSignal(SSdcs, COMSIG_GLOB_VEHICLE_ORDERED, PROC_REF(populate_products))
 	if(!GLOB.VehicleGearConsole)
 		GLOB.VehicleGearConsole = src

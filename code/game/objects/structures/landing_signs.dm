@@ -4,10 +4,8 @@
 	icon = 'icons/obj/structures/props/landing_signs.dmi'
 	icon_state = "laz_sign"
 	density = TRUE
-
-/obj/structure/lz_sign/Initialize(mapload, ...)
-	. = ..()
-	AddElement(/datum/element/multitile, 2, 2, can_block_movement)
+	height = 2
+	width = 2
 
 /obj/structure/lz_sign/lazarus_sign
 	name = "Lazarus Landing Sign"

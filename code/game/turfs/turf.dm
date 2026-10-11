@@ -253,29 +253,45 @@
 	else { \
 		blocking_dir = NO_BLOCKED_MOVEMENT; \
 	} \
+	/* uncomment macro_breakpoint for breakpoints */ \
+	macro_breakpoint("process potential blocker, calculated blocking_dir"); \
 	if (blocking_dir & target_dir) { \
+		/* uncomment macro_breakpoint for breakpoints */ \
+		macro_breakpoint("process potential blocker, blocker found"); \
 		if (!longitudinal_dir || blocking_dir & longitudinal_dir) { \
 			longitudinal_dir_count += 1; \
 		} \
 		if (!latitudinal_dir || blocking_dir & latitudinal_dir) { \
 			latitudinal_dir_count += 1; \
 		} \
-		if (blocker.flags_atom & ON_BORDER) { LAZYSET(border_blockers, blocker, blocking_dir); } \
-		else { LAZYSET(non_border_blockers, blocker, blocking_dir); } \
+		if (blocker.flags_atom & ON_BORDER) { \
+			LAZYSET(border_blockers, blocker, blocking_dir); \
+		} \
+		else { \
+			LAZYSET(non_border_blockers, blocker, blocking_dir); \
+		} \
 	}
 
 	#define PROCESS_POTENTIAL_BLOCKERS \
 	if ((!longitudinal_dir || longitudinal_dir_count) && (!latitudinal_dir || latitudinal_dir_count)) { \
 		was_blocked = FALSE; \
 		for (var/border_blocker in border_blockers) { \
+			/* uncomment macro_breakpoint for breakpoints */ \
+			macro_breakpoint("process potential blockers, border blocker"); \
 			if (!(mover.Collide(border_blocker) & MOVABLE_COLLIDE_NOT_BLOCKED)) { \
+				/* uncomment macro_breakpoint for breakpoints */ \
+				macro_breakpoint("process potential blockers, border blocker blocked"); \
 				was_blocked = TRUE; \
 			} \
 			border_blockers -= border_blocker; \
 		} \
 		if (was_blocked) { return FALSE; } \
 		for (var/non_border_blocker in non_border_blockers) { \
+			/* uncomment macro_breakpoint for breakpoints */ \
+			macro_breakpoint("process potential blockers, non border blocker"); \
 			if (!(mover.Collide(non_border_blocker) & MOVABLE_COLLIDE_NOT_BLOCKED)) { \
+				/* uncomment macro_breakpoint for breakpoints */ \
+				macro_breakpoint("process potential blockers, non border blocker blocked"); \
 				was_blocked = TRUE; \
 			} \
 			blocking_dir = non_border_blockers[non_border_blocker]; \

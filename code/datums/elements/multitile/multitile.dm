@@ -26,7 +26,18 @@
 	/// Defaults to the size of a tile in pixels.
 	var/scale
 
-/datum/element/multitile/Attach(datum/target, width, height, can_block_movement, x_offset = 0, y_offset = 0, dynamic = FALSE, scale = world.icon_size, on_set_bounds, on_moved)
+/// List of additional params to
+/datum/multitile_params
+	var/dynamic
+
+/datum/multitile_params/New(dynamic = FALSE)
+	src.dynamic = dynamic
+
+/atom/proc/get_multitile_params()
+	RETURN_TYPE(/datum/multitile_params)
+	return null
+
+/datum/element/multitile/Attach(datum/target, width, height, can_block_movement, x_offset = 0, y_offset = 0, dynamic = FALSE, scale = world.icon_size)
 	. = ..()
 	if (. == ELEMENT_INCOMPATIBLE)
 		return

@@ -16,31 +16,10 @@
 	projectile_coverage = PROJECTILE_COVERAGE_MEDIUM
 	can_block_movement = TRUE
 
-	/// Width of the structure when facing SOUTH (by default at 32 pixel scale, e.g. 1 width = 32 pixel bound_width)
-	var/width = 1
-	/// Height of the structure when facing SOUTH (by default at 32 pixel scale, e.g. 1 height = 32 pixel bound_height)
-	var/height = 1
-
-	/// How much to offset hitbox on x-axis when facing SOUTH (by default at 32 pixel scale, e.g. 1 x_offset = 32 pixel bound_x)
-	var/x_offset = 0
-	/// How much to offset hitbox on y-axis when facing SOUTH (by default at 32 pixel scale, e.g. 1 y_offset = 32 pixel bound_y)
-	var/y_offset = 0
-
 /obj/structure/Initialize(mapload, ...)
 	. = ..()
 	if(climbable)
 		verbs += /obj/structure/proc/climb_on
-
-	if (width > 1 || height > 1)
-		var/datum/structure_multitile_params/params = get_multitile_params()
-		var/dynamic
-		var/on_set_bounds
-		var/on_moved
-		if (!isnull(params))
-			dynamic = params.dynamic
-			on_set_bounds = params.on_set_bounds
-			on_moved = params.on_moved
-		AddElement(/datum/element/multitile, width, height, can_block_movement, x_offset = x_offset, y_offset = y_offset, dynamic = dynamic, on_set_bounds = on_set_bounds, on_moved = on_moved)
 
 /obj/structure/Destroy()
 	//before ..() because the parent does loc = null
@@ -52,21 +31,6 @@
 			O.forceMove(get_turf(loc))
 	debris = null
 	. = ..()
-
-/// List of additional params to
-/datum/structure_multitile_params
-	var/dynamic
-	var/on_set_bounds
-	var/on_moved
-
-/datum/structure_multitile_params/New(dynamic = FALSE, on_set_bounds, on_moved)
-	src.dynamic = dynamic
-	src.on_set_bounds = on_set_bounds
-	src.on_moved = on_moved
-
-/obj/structure/proc/get_multitile_params()
-	RETURN_TYPE(/datum/structure_multitile_params)
-	return null
 
 /obj/structure/attack_animal(mob/living/user)
 	if(breakable)

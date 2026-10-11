@@ -44,6 +44,16 @@
 	/// A weakref to the mob currently interacting with us.
 	var/datum/weakref/interactor
 
+	/// Width of the atom when facing SOUTH (by default at 32 pixel scale, e.g. 1 width = 32 pixel bound_width)
+	var/width = 1
+	/// Height of the atom when facing SOUTH (by default at 32 pixel scale, e.g. 1 height = 32 pixel bound_height)
+	var/height = 1
+
+	/// How much to offset hitbox on x-axis when facing SOUTH (by default at 32 pixel scale, e.g. 1 x_offset = 32 pixel bound_x)
+	var/x_offset = 0
+	/// How much to offset hitbox on y-axis when facing SOUTH (by default at 32 pixel scale, e.g. 1 y_offset = 32 pixel bound_y)
+	var/y_offset = 0
+
 //===========================================================================
 /atom/movable/Destroy(force)
 	for(var/atom/movable/I in contents)
@@ -148,6 +158,13 @@
 		AddComponent(/datum/component/overlay_lighting, is_directional = TRUE)
 	if (loc)
 		loc.Entered(src)
+
+	if (width > 1 || height > 1)
+		var/datum/multitile_params/params = get_multitile_params()
+		var/dynamic
+		if (!isnull(params))
+			dynamic = params.dynamic
+		AddElement(/datum/element/multitile, width, height, can_block_movement, x_offset, y_offset, dynamic)
 
 /atom/movable/proc/update_emissive_block()
 	// This one is incredible.

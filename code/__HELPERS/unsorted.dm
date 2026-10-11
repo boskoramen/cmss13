@@ -1624,6 +1624,22 @@ GLOBAL_DATUM_INIT(dview_mob, /mob/dview, new)
 /proc/stack_trace(msg)
 	CRASH(msg)
 
+/// Proc to use for using breakpoints for macros
+/proc/macro_breakpoint(key)
+	switch (key)
+		if ("process potential blocker, calculated blocking_dir")
+			return
+		if ("process potential blocker, blocker found")
+			return
+		if ("process potential blockers, non border blocker")
+			return
+		if ("process potential blockers, non border blocker blocked")
+			return
+		if ("process potential blockers, border blocker")
+			return
+		if ("process potential blockers, border blocker blocked")
+			return
+
 // \ref behaviour got changed in 512 so this is necesary to replicate old behaviour.
 // If it ever becomes necesary to get a more performant REF(), this lies here in wait
 // #define REF(thing) (thing && istype(thing, /datum) && (thing:datum_flags & DF_USE_TAG) && thing:tag ? "[thing:tag]" : "\ref[thing]")
